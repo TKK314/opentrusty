@@ -1,0 +1,420 @@
+﻿/// <reference path="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.4.4-vsdoc.js" />
+
+/*======================================================================*/
+/*　　 ショートカットキー抑止・画面遷移警告 eventControl.js　　　　　　 */
+/*======================================================================*/
+
+/*======================*/
+/*   メッセージ定義     */
+/*======================*/
+
+// 未保存状態での画面遷移時メッセージ
+var MSG_UNSAVED = "続行すると入力内容は破棄されます。\n" + "続行してよろしいですか。";
+
+// ショートカットキー抑止時メッセージ
+var MSG_SHORTCUT = "入力内容の消失を防ぐため、本システムでは[1]を使用しないでください。";
+
+/*=======================*/
+/*  画面遷移警告用関数   */
+/*  & セッション削除関数 */
+/*=======================*/
+
+// 確認ダイアログを出すかどうかのフラグ
+var execBeforeUnload = true;
+
+function cancelBeforeUnload() {
+    /// <summary>
+    /// 確認ダイアログ表示フラグを一時的にfalseに設定します。
+    /// </summary>
+    /// <remarks>
+    /// タイムアウトが短すぎると確認ダイアログが表示されてしまう(特にChrome)ので
+    /// タイムアウトは0.2秒とします。
+    /// </remarks>
+
+    execBeforeUnload = false;
+    setTimeout(function () { execBeforeUnload = true; }, 200);
+}
+
+function isEditing(w) {
+    /// <summary>
+    /// この画面が入力・確認画面かどうかを返します。
+    /// </summary>
+    /// <param name="w" type="Window">画面オブジェクト。</param>
+
+    return ((typeof (w.editing) != 'undefined') && (w.editing));
+}
+
+function isEditingRecursive(w) {
+    /// <summary>
+    /// 指定された画面、または、子孫のiframeが入力・確認画面かどうかを返します。
+    /// </summary>
+    /// <param name="w" type="Window">画面オブジェクト。</param>
+
+    if (isEditing(w)) return true;
+
+    var iframes = w.document.getElementsByTagName("iframe");
+    var c = iframes.length;
+    for (var i = 0; i < c; i++) {
+        var f = iframes[i];
+        if (f.src == "") continue; // まだ読み込まれていない場合は無視
+        if (isEditingRecursive(f.contentWindow)) return true;
+    }
+    return false;
+}
+
+function confirmWhenClosing() {
+    /// <summary>
+    /// 空の関数です。この関数は現在使用されていません。
+    /// </summary>
+}
+
+function forceToCloseWindow() {
+    /// <summary>
+    /// マスターページの「閉じる」ボタンで呼び出され、ウィンドウを閉じます。
+    /// </summary>
+
+    window.close();
+}
+
+function getWindowId(w) {
+    /// <summary>
+    /// 指定された画面のWindow IDを返します。
+    /// </summary>
+    /// <param name="w" type="Window">画面オブジェクト。</param>
+    /// <remarks>URLのクエリストリングから、「wid=XXX」のXXXにあたる部分を取り出します。</remarks>
+
+    var queryString = w.location.search;
+    var re = /[?&]wid=([^&]*)/;
+    var m = re.exec(queryString);
+    return (m == null) ? null : m[1];
+}
+
+function getWindowIdRecursive(w) {
+    /// <summary>
+    /// 指定された画面、および、子孫のiframeのWindow IDをカンマ(,)で結合して返します。
+    /// </summary>
+    /// <param name="w" type="Window">画面オブジェクト。</param>
+
+    var wid = getWindowId(w);
+
+    var iframes = w.document.getElementsByTagName("iframe");
+    var c = iframes.length;
+    for (var i = 0; i < c; i++) {
+        var f = iframes[i];
+        if (f.src == "") continue; // まだ読み込まれていない場合は無視
+        var cwid = getWindowIdRecursive(f.contentWindow);
+        if (cwid) {
+            wid = (wid) ? wid + "," + cwid : cwid;
+        }
+    }
+    return wid;
+}
+
+function callCloseWindow(url, w) {
+    /// <summary>
+    /// サーバのウィンドウ閉じ処理を呼び出します。
+    /// </summary>
+    /// <param name="url" type="String">呼び出し先のURL。</param>
+    /// <param name="w" type="Window">画面オブジェクト。</param>
+
+    if (w.wid) {
+        url = url + '?wid=' + w.wid;
+        w.$.ajax({
+            type: 'POST',
+            url: url,
+            cache: false,
+            async: false,
+            dataType: 'text'
+        });
+    }
+}
+
+function openConfirmingWindow(url, w) {
+    /// <summary>
+    /// 確認ダイアログが消えるまで待つウィンドウを開きます。
+    /// </summary>
+    /// <param name="url" type="String">呼び出し先のURL。</param>
+    /// <param name="w" type="Window">画面オブジェクト。</param>
+    if (w.wid) {
+        url = url + '?confirming=true&wid=' + w.wid;
+        w.open(url, 'child', 'toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=yes,status=no,width=1,height=1');
+    }
+}
+
+/*===========================*/
+/* キー抑止フラグ(firefox用) */
+/*===========================*/
+
+var isKeyControled = false;
+
+/*====================*/
+/* キーコード名称定義 */
+/*====================*/
+
+var KEY_CODE_NAME = {
+    0: "",
+    8: "BackSpace",
+    9: "Tab",
+    13: "Enter",
+    16: "Shift",
+    17: "Ctrl",
+    18: "Alt",
+    19: "Pause",
+    27: "Esc",
+    28: "変換",
+    29: "無変換",
+    32: "Space",
+    33: "PageUp",
+    34: "PageDown",
+    35: "End",
+    36: "Home",
+    37: "←",
+    38: "↑",
+    39: "→",
+    40: "↓",
+    45: "Insert",
+    46: "Delete",
+    48: "0",
+    49: "1",
+    50: "2",
+    51: "3",
+    52: "4",
+    53: "5",
+    54: "6",
+    55: "7",
+    56: "8",
+    57: "9",
+    65: "A",
+    66: "B",
+    67: "C",
+    68: "D",
+    69: "E",
+    70: "F",
+    71: "G",
+    72: "H",
+    73: "I",
+    74: "J",
+    75: "K",
+    76: "L",
+    77: "M",
+    78: "N",
+    79: "O",
+    80: "P",
+    81: "Q",
+    82: "R",
+    83: "S",
+    84: "T",
+    85: "U",
+    86: "V",
+    87: "W",
+    88: "X",
+    89: "Y",
+    90: "Z",
+    91: "Windowsキー",
+    93: "Applicationキー",
+    112: "F1",
+    113: "F2",
+    114: "F3",
+    115: "F4",
+    116: "F5",
+    117: "F6",
+    118: "F7",
+    119: "F8",
+    120: "F9",
+    121: "F10",
+    122: "F11",
+    123: "F12",
+    144: "NumLock",
+    145: "ScrollLock"
+}
+
+/*================================*/
+/* 抑止するショートカットのリスト */
+/*================================*/
+
+// 抑止ショートカットリスト
+var CONTROL_SHORTCUT = new Array(
+	new KeyInfo(8), 				  // BackSpace
+	new KeyInfo(27), 				  // Esc
+	new KeyInfo(114), 				  // F3
+	new KeyInfo(116), 				  // F5
+	new KeyInfo(122), 				  // F11
+	new KeyInfo(36, { alt: true }),   // Alt + Home
+	new KeyInfo(37, { alt: true }),   // Alt + ←
+	new KeyInfo(39, { alt: true }),   // Alt + →
+	new KeyInfo(66, { ctrl: true }),  // Ctrl + B
+	new KeyInfo(68, { ctrl: true }),  // Ctrl + D
+	new KeyInfo(69, { ctrl: true }),  // Ctrl + E
+	new KeyInfo(72, { ctrl: true }),  // Ctrl + H
+	new KeyInfo(73, { ctrl: true }),  // Ctrl + I
+	new KeyInfo(76, { ctrl: true }),  // Ctrl + L
+	new KeyInfo(78, { ctrl: true }),  // Ctrl + N
+	new KeyInfo(79, { ctrl: true }),  // Ctrl + O
+	new KeyInfo(82, { ctrl: true }),  // Ctrl + R
+	new KeyInfo(84, { ctrl: true }),  // Ctrl + T
+	new KeyInfo(87, { ctrl: true }),  // Ctrl + W
+	new KeyInfo(115, { ctrl: true }), // Ctrl + F4
+	new KeyInfo(116, { ctrl: true })  // Ctrl + F5
+);
+
+/*==============================*/
+/* ショートカットキー抑止用関数 */
+/*==============================*/
+
+function KeyInfo(code, modifier) {
+    /// <summary>
+    /// キー情報オブジェクトのコンストラクタ。
+    /// </summary>
+    /// <param name="code" type="Number">キーコード。</param>
+    /// <param name="modifier" type="Object">修飾キー状態(キー=alt,ctrl,shift / 値=真偽値)の連想配列。</param>
+
+    // キーコード
+    this.code = code ? code : 0;
+    // Altキー押下フラグ
+    this.alt = modifier ? (modifier["alt"] ? modifier["alt"] : false) : false;
+    // Ctrlキー押下フラグ
+    this.ctrl = modifier ? (modifier["ctrl"] ? modifier["ctrl"] : false) : false;
+    // Shiftキー押下フラグ
+    this.shift = modifier ? (modifier["shift"] ? modifier["shift"] : false) : false;
+
+    // キーコードを文字列に変換
+    this.toString = function () {
+        var str = "";
+        str += this.alt ? "Alt + " : "";
+        str += this.ctrl ? "Ctrl + " : "";
+        str += this.shift ? "Shift + " : "";
+        str += KEY_CODE_NAME[String(this.code)];
+
+        return str;
+    }
+}
+
+function controlShortcut(e) {
+    /// <summary>
+    /// keydownイベント(firefoxの場合はkeypressイベント)で呼び出され、ショートカットキーを抑止します。
+    /// </summary>
+
+    // テキストボックスやテキストエリアにフォーカスがありBackspace、Escが押された場合は処理しない
+    if (e.keyCode == 8 || e.keyCode == 27) {
+        if (e.target.nodeName.toLowerCase() == "textarea") {
+            return true;
+        }
+        if (e.target.nodeName.toLowerCase() == "input") {
+            var t = $(e.target).attr("type").toLowerCase();
+            if (t == "text" || t == "password") {
+                return true;
+            }
+        }
+    }
+
+    // 抑止ショートカットリストの数だけ繰り返し
+    for (var i in CONTROL_SHORTCUT) {
+        // 押下されたボタンと一致した場合
+        if (e.keyCode == CONTROL_SHORTCUT[i].code &&
+			e.altKey == CONTROL_SHORTCUT[i].alt &&
+			e.ctrlKey == CONTROL_SHORTCUT[i].ctrl &&
+			e.shiftKey == CONTROL_SHORTCUT[i].shift) {
+
+            // メッセージを表示
+            var message = MSG_SHORTCUT.replace("[1]", CONTROL_SHORTCUT[i].toString());
+            alert(message);
+
+            // イベントの抑止
+            if (e.preventDefault) {
+                e.preventDefault();
+            } else {
+                if (!event.altKey) {
+                    event.keyCode = 0;
+                }
+                e.returnValue = false;
+            }
+
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            } else {
+                e.cancelBubble = true;
+            }
+
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/*===================================*/
+/* キー抑止・画面遷移警告 初期化処理 */
+/*===================================*/
+
+$(function () {
+    // beforeunload イベントの設定
+    $(window).on('beforeunload', function (event) {
+        if (!execBeforeUnload) return;
+        var hiddenField = $('#__CLOSEWINDOW');
+        var closeWindowUrl = (hiddenField.length == 0) ? null : hiddenField.val();
+        var tw = window.top;
+        if (isEditingRecursive(tw)) {
+            if (tw.confirming) return;
+            tw.confirming = true;
+            window.setTimeout(function () { delete (window.top.confirming); }, 100);
+
+            if (closeWindowUrl) {
+                tw.wid = getWindowIdRecursive(tw);
+                openConfirmingWindow(closeWindowUrl, tw);
+            }
+
+            return MSG_UNSAVED;
+        } else {
+            if (tw.confirming != null) return;
+            tw.confirming = false;
+
+            if (closeWindowUrl) {
+                tw.wid = getWindowIdRecursive(tw);
+                callCloseWindow(closeWindowUrl, tw);
+            }
+        }
+    });
+    // IE だと href="javascript:void(0)" といったリンクを
+    // クリックしても beforeunload が発生するのでキャンセルする
+    $("a").on('click', function (e) {
+        if (this.href.indexOf('javascript') == 0) {
+            cancelBeforeUnload();
+        }
+    });
+    // form の submit 時に beforeunload が発生するのでキャンセルする
+    // (ボタンコントロールのポストバック対応)
+    $('form').on('submit', function (e) {
+        cancelBeforeUnload();
+    });
+    // __doPostBack時に beforeunload が発生するのでキャンセルする
+    // (ボタンコントロール以外のポストバック対応)
+    if (typeof (__doPostBack) == 'function') {
+        var doPostBackOld = __doPostBack;
+        __doPostBack = function (eventTarget, eventArgument) {
+            cancelBeforeUnload();
+            doPostBackOld(eventTarget, eventArgument);
+        }
+    }
+    // ショートカットキー操作抑止
+    if (window.navigator.userAgent.match(/Firefox/i) != null) {
+        // firefoxのみkeypressイベントで制御
+        $(document).on('keypress',function (e) {
+            // firefoxではkeypressイベントが連続発生するので、
+            // 一度メッセージを出したらしばらく出さない
+            if (isKeyControled) {
+                return true;
+            };
+            var retVal = controlShortcut(e);
+            if (retVal) {
+                isKeyControled = true;
+                setTimeout(function () { isKeyControled = false; }, 0);
+            }
+            return retVal;
+        });
+    } else {
+        // firefox以外はkeydownイベントで制御
+        $(document).on('keydown',function (e) {
+            return controlShortcut(e);
+        });
+    }
+});

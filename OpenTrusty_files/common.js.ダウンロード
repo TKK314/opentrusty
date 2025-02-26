@@ -1,0 +1,803 @@
+// システム化時に削除される可能性あり。
+jQuery(function () {
+
+    /* 可動式2カラムレイアウト */
+    $("#tree-view").treeview();
+    $('.left-pane').resizable(
+      {
+          'handles': 'e',
+          'autoHide': false,
+          resize: function (e, ui) {
+              $(".right-pane").width(ui.element.closest(".two-column").width() - ui.size.width - 9);
+          }
+      }
+    );
+
+    /* モーダルウィンドウ */
+    $('[rel*=leanModal]').leanModal({
+        top: 5,
+        overlay: 0.2,               // 背面の透明度
+        closeButton: ".modal_img"  // 閉じるボタンのCSS classを指定
+    });
+
+    /* カレンダー */
+    $(function () {
+        $.datepicker.setDefaults($.datepicker.regional['ja']);
+        $.datepicker.setDefaults({
+            dateFormat: 'yy年mm月dd日',
+            showMonthAfterYear: true,
+            language: 'ja',
+            defaultDate: new Date(),
+            showAnim: 'slideDown'
+        });
+
+    });
+
+    $("input.calendar, .calendar-from, .calendar-to").after('<span class="glyphicon glyphicon-calendar calendar-icon"></span>');
+
+    // カレンダーから日付を入力する
+    $("input.calendar").each(function () {
+        var limitOpt = $.extend({}, {
+            beforeShow: function () {
+                if ($(this).data("date-type") === "past") {
+                    return {
+                        maxDate: (new Date())
+                    };
+                } else if ($(this).data("date-type") === "future") {
+                    return {
+                        minDate: (new Date())
+                    };
+                };
+            }
+        });
+        $(this).datepicker(limitOpt);
+    });
+
+    // ツリービューの開閉
+    $(".tree-list-opener .open").on('click',function () {
+        var $leftPane = $(".left-pane").width(258);
+        $(".right-pane").width($leftPane.closest(".two-column").width() - $leftPane.width() - 17);
+    });
+    $(".tree-list-opener .close").on('click',function () {
+        var $leftPane = $(".left-pane").width(10);
+        $(".right-pane").width($leftPane.closest(".two-column").width() - $leftPane.width() - 17);
+    });
+    $(window).on('resize',function () {
+        // 左右のパネルの高さ揃え
+        var leftHeight = $(".left-pane").height();
+        var rightHeight = $(".right-pane").height();
+        (leftHeight > rightHeight) ? $(".right-pane").height(leftHeight + 8) : $(".left-pane").height(rightHeight);
+
+        var $leftPane = $(".left-pane");
+        $(".right-pane").width($leftPane.closest(".two-column").width() - $leftPane.width() - 17);
+    }).trigger('resize');
+});
+
+/*======================*/
+/* 汎用の確認ダイアログ */
+/*======================*/
+function confirmUpdate(message) {
+    /// <summary>
+    /// 指定したメッセージを表示する確認ダイアログを表示します。
+    /// </summary>
+    /// <param name="message" type="String">ダイアログに表示するメッセージ。</param>
+    /// <returns type="Boolean" />
+
+    return window.confirm(message);
+}
+
+
+/*============*/
+/* 初期表示用 */
+/*============*/
+window.onload = function () {
+    window.isDirty = true;
+    addDateFormat();
+    addTimeFormat();
+    addNumberFormat();
+    //addSuggestion();
+    addIndicator();
+    //applyTabHover();
+    applyCheckBoxList();
+    //addAmbiguousSearchIcon();
+    //addMultiSearchIcon();
+    //addTagExplanationIcon();
+    //addPartMatchIcont();
+    //addPrefixMatchIcon();
+    //addSuffixMatchIcon();
+    //fullMatchBefore();
+    //fullMatchAfter();
+    //checkApplyLCStyle();
+    //applyCommonButton();
+    //restoreTabs();
+    overrideClientValidate();
+}
+
+/*　システム共通部品からのみ呼び出される関数　start　*/
+
+/*==========================*/
+/* 入力補助（カレンダー）用 */
+/*==========================*/
+function getYYYYMMDD(y, m, d) {
+    /// <summary>
+    /// 数値で指定した日付の文字列表現を返します。
+    /// </summary>
+    /// <param name="y" type="Number">年。</param>
+    /// <param name="m" type="Number">月。</param>
+    /// <param name="d" type="Number">日。</param>
+    /// <returns type="String" />
+
+    var sy = new String(y);
+    var sm = new String(m);
+    var sd = new String(d);
+    if (m < 10) sm = '0' + sm;
+    if (d < 10) sd = '0' + sd;
+    return sy + sm + sd;
+}
+
+function getDate() {
+    /// <summary>
+    /// 本日日付をyyyy/MM/ddの形式で返します。
+    /// </summary>
+    /// <returns type="String" />
+
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    if (month < 10) {
+        month = "0" + month;
+    }
+    if (day < 10) {
+        day = "0" + day;
+    }
+    var strDate = year + "/" + month + "/" + day;
+    return strDate;
+}
+
+/*====================*/
+/* 入力補助用判定関数 */
+/*====================*/
+
+function isEmpty(value) {
+    /// <summary>
+    /// 指定された値が空っぽ（null or 空白文字 or 空白文字列）かを判定します。
+    /// </summary>
+    /// <param name="value" type="String">チェック対象の値。</param>
+    /// <returns type="Boolean">空っぽの場合 true が返ります。</returns>
+
+    // null or 空白文字かを確認する
+    if (value == null || value == "") {
+        return true;
+    }
+
+    // すべて空白文字かを確認する
+    var chValue = value.split(" ").join("");
+    if (chValue == null || chValue == "") {
+        return true;
+    }
+
+    return false;
+}
+
+function isNumeric(value) {
+    /// <summary>
+    /// 指定された値が半角数値で構成されているかを判定します。
+    /// </summary>
+    /// <param name="value" type="String">チェック対象の値。</param>
+    /// <returns type="Boolean">
+    /// すべて半角数値で構成されている場合 true が返ります。
+    /// 空文字列の場合は false が返ります。
+    /// </returns>
+
+    var validChars = "0123456789";
+    var isNumber = true;
+    var ch;
+
+    // 空文字列かを確認する
+    if (isEmpty(value)) {
+        return false;
+    }
+
+    // チェック
+    for (var i = 0; i < value.length && isNumber; i++) {
+        if (validChars.indexOf(value.charAt(i)) == -1) {
+            isNumber = false;
+        }
+    }
+
+    return isNumber;
+}
+
+function isNumberFormat(value) {
+    /// <summary>
+    /// 指定された値が半角数値または半角ピリオドのみで構成されているかを判定します。
+    /// </summary>
+    /// <param name="value" type="String">チェック対象の値。</param>
+    /// <returns type="Boolean">
+    /// すべて半角数値か半角ピリオドで構成されている場合 true が返ります。
+    /// 空文字列の場合は false が返ります。
+    /// </returns>
+
+    // 空文字、nullの場合はfalse
+    if (value == null || value == '') {
+        return false;
+    }
+
+    // 数値が含まれていなければそのまま返す。
+    rs = value.match(/\-{0,1}[0-9]+/g);
+    if (rs == null) {
+        return false;
+    }
+
+    // [.],[0-9]以外の文字が存在したらfalse。
+    rs = value.match(/[^\.0-9]/g);
+    if (rs != null) {
+        return false;
+    }
+
+    // ピリオドのチェック。ピリオドが複数あった場合はfalse
+    rs = value.match(/\./g);
+    if (rs != null) {
+        if (rs.length > 1) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function dropZero(value) {
+    /// <summary>
+    /// フォーカスOFF 時に先頭にある 0 を除去します。
+    /// </summary>
+    /// <param name="value" type="String">テキストボックス入力値。</param>
+    /// <returns type="String">0が除去された数値。</returns>
+
+    if (isEmpty(value)) {
+        // 空文字の場合はそのまま値を返す
+        return value;
+    }
+
+    // 先頭に 0 がある場合，それを除去する
+    value = value.replace(/^0+/, "");
+
+    if (value == "") {
+        // 全て 0 だったので，0 を返す
+        value = "0";
+    }
+
+    return value;
+}
+
+/*====================*/
+/* 入力補助関数の適用 */
+/*====================*/
+
+function addNumberFormat() {
+    /// <summary>
+    /// 数値テキストボックスのフォーカスin/out時にカンマを除去/付加します。
+    /// </summary>
+
+    var target = $(".NumberTextBox");
+
+    target.on('focus',function () {
+        $(this).val(removeComma($(this).val()));
+    }).on('blur',function () {
+        $(this).val(addComma($(this).val()));
+    });
+
+}
+
+function addDateFormat() {
+    /// <summary>
+    /// 日付テキストボックスにjQuery UI DatePickerを適用します。
+    /// また、フォーカスin/out時にスラッシュを除去/付加します。
+    /// </summary>
+
+    var target = $(".DateTextBox");
+    // 入力値を変換してから検証ロジックを呼ぶようにするため、
+    // onchange属性に設定されている関数を一旦取り外す。
+    var validationFunc = target.attr('onchange');
+    target.attr('onchange', '');
+
+    target.datepicker({
+        monthNames: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+        dayNamesMin: ["日", "月", "火", "水", "木", "金", "土"],
+        dateFormat: "yy/mm/dd",
+        showOtherMonths: true,
+        numberOfMonths: 1,
+        showOn: "button",
+        buttonImage: "../../../Styles/images/icon/icon_calendar.png",
+        buttonImageOnly: true,
+        showMonthAfterYear: true,
+        //beforeShow: function (input, inst) {
+        //    getHolidays(inst);
+        //    // silvelrightと重ならないように、カレンダーの向きを強制変更
+        //    var direction = $(input).data("direction");
+        //    if (direction != 'up') return;
+        //    var calendar = inst.dpDiv;
+        //    setTimeout(function () {
+        //        calendar.position({
+        //            my: 'left bottom', at: 'left top', of: input, collision: 'none'
+        //        });
+        //    }, 1);
+        //},
+        //onChangeMonthYear: function (year, month, inst) {
+        //    getHolidays(inst);
+        //},
+        //beforeShowDay: function (date) {
+        //    var weeks = date.getDay();
+
+        //    var kubun = getHolidayKubun(date)
+        //    switch (kubun) {
+        //        case "1":
+        //            // 国民の祝日
+        //            weeks = 7;
+        //            break;
+        //        case "2":
+        //            // 国民の祝日（振替休日）
+        //            weeks = 7;
+        //            break;
+        //        case "3":
+        //            // 機構休日
+        //            weeks = 8;
+        //            break;
+        //    }
+
+        //    switch (weeks) {
+        //        case 0:
+        //            return [true, "ui-datepicker-sunday"];
+        //        case 6:
+        //            return [true, "ui-datepicker-saturday"];
+        //        case 7:
+        //            return [true, "ui-datepicker-holiday"];
+        //        case 8:
+        //            return [true, "ui-datepicker-kikoholiday"];
+        //        default:
+        //            return [true];
+        //    }
+        //}
+    }).on('focus',function () {
+        $(this).val(removeSlash($(this).val()));
+    }).on('focusout',function (ev) {
+        // 当日日付に変換したり、スラッシュを追加したりした後で
+        // 検証ロジックを呼び出す
+        if ($(this).val() == "0") {
+            $(this).val(getDate());
+        } else {
+            $(this).val(addSlash($(this).val()));
+        }
+    }).on('change',function (ev) {
+        if (validationFunc != null) {
+            validationFunc(ev);
+        }
+    }).on('blur',function () {
+        // スラッシュの付加のみ実施する
+        $(this).val(addSlash($(this).val()));
+    });
+
+    // 読み取り専用または無効の場合、カレンダーを無効化する
+    $(".DateTextBox[readonly='readonly']").datepicker('disable');
+    $(".DateTextBox[disabled='disabled']").datepicker('disable');
+
+}
+
+function addTimeFormat() {
+    /// <summary>
+    /// 時刻テキストボックスのフォーカスin/out時にコロンを除去/付加します。
+    /// </summary>
+
+    var target = $(".TimeTextBox");
+
+    target.on('focus',function () {
+        $(this).val(removeColon($(this).val()));
+    }).on('blur',function () {
+        $(this).val(addColon($(this).val()));
+    });
+}
+
+/*====================*/
+/* インジケータ表示用 */
+/*====================*/
+
+function SCButtonClick(btn) {
+    /// <summary>
+    /// インジケータ対応ボタンコントロールの押下時に呼ばれる関数です。
+    /// コントロールが全て既定値の場合、何も行いません。
+    /// コントロールの設定（引数で指定された値）によって、ASP.NETクライアント検証の意図的な呼び出しと、
+    /// 割り込み関数の実行、インジケータの表示を行います。
+    /// </summary>
+    /// <param name="btn" domElement="true">クリックしたボタン。</param>
+    /// <returns type="Boolean">ポストバックする場合はtrue。ポストバックしない場合はfalse。</returns>
+    /// <remarks>
+    /// btn.indはインジケータの設定情報です。以下の情報を'$'で結合した文字列です。
+    /// displayLoading インジケータを表示するかどうか　コントロールの既定値はTrue
+    /// causesValidation 検証を行うかどうか　コントロールの既定値はTrue
+    /// validationGroup 検証グループ　コントロールの既定値は空文字
+    /// fName 検証後に割り込ませるjavaScript関数名　コントロールの既定値は空文字(割り込ませない)
+    /// fArg 検証後に割り込ませるjavaScript関数に渡す引数文字列　コントロールの既定値は空文字(割り込ませない)
+    /// 
+    /// インジケータの表示のために、プラグインを利用しています。
+    /// Activity Indicator<http://neteye.github.com/activity-indicator.html>
+    /// 尚、プラグインの1.0.0版はIE8でエラーを起こすため、FIX版を使用しています。
+    /// 
+    /// beforeunload のキャンセルはeventnControl.js内で対応しています。
+    /// </remarks>
+
+    var ind = btn.ind;
+    if (ind == null) return true;
+    var arr = ind.split("$");
+    var displayLoading = arr[0] == "True";
+    var causesValidation = arr[1] == "True";
+    var validationGroup = arr[2];
+    var fName = arr[3];
+    var fArg = arr[4];
+    var callFunction = (fName != "");
+
+    // ボタン設定が要検証で、かつページに検証コントロールが配置されており、
+    // かつ割り込み関数またはインジケータ表示が有効な場合、検証を呼び出す。
+    if (causesValidation && typeof (Page_ClientValidate) == 'function' && (callFunction || displayLoading)) {
+        if (!Page_ClientValidate(validationGroup)) {
+            // Page_ClientValidate()を呼んだ後にポストバック処理を呼び出さない場合は、
+            // 自分でPage_BlockSubmitフラグをfalseに戻す必要がある。
+            Page_BlockSubmit = false;
+            return false;
+        }
+    }
+
+    // 割り込み関数が有効な場合、割り込み関数を呼び出す。
+    if (callFunction) {
+        _functionStr = "return " + fName + "('" + fArg + "')";
+        _function = new Function(_functionStr);
+        if (_function() == false) {
+            return false;
+        }
+    }
+
+    // タブ編集中の時に親フレームでポストバックしないようにする(品目LC対応)
+    var iframes = $('iframe');
+    for (var i = 0; i < iframes.length ; i++) {
+        var cw = iframes.get(i).contentWindow;
+        if ((typeof (cw.editing) != 'undefined') && (cw.editing)) {
+            // 子フレームが編集中
+            alertInnerTab();
+            return false;
+        }
+    }
+
+    // ポストバック許可フラグをオンにする。
+    // また、インジケータ表示が有効な場合、インジケータ表示を行う。
+    window.isDirty = false;
+    if (displayLoading) {
+        var loader = $('div.Loader');
+        loader.each(function () {
+            this.style.display = 'inline';
+            this.style.height = this.parentNode.offsetHeight;
+        });
+        try {
+            loader.activity({
+                segments: 12,
+                width: 16,
+                space: 0,
+                length: 20,
+                color: '#252525',
+                speed: 1.0
+            });
+        } catch (ex) {
+        }
+    }
+
+    // この後、submitに伴いASP.NET既定のクライアント検証がもう一度呼ばれる。
+    return true;
+};
+
+function addIndicator() {
+    /// <summary>
+    /// インジケータ対応ボタンのイベントハンドラを変更して、SCButtonClick関数が呼び出されるようにします。
+    /// </summary>
+
+    var target = $('.IndicatorButton');
+    target.each(function () {
+        var oh = this.onclick;
+        var nh = function () {
+            if (!SCButtonClick(this)) {
+                return false;
+            }
+            if (typeof oh == "function") {
+                return oh.apply(this, arguments);
+            }
+            return true;
+        };
+        this.onclick = nh;
+    });
+};
+
+
+/*====================*/
+/* モーダル子画面用 */
+/*====================*/
+function showModalAndPostback(url, dialogParam, postbackRef) {
+    /// <summary>
+    /// モーダル子画面を表示後、親画面をポストバックします。
+    /// </summary>
+    /// <remarks>
+    /// システム共通部品からのみ呼び出されます。
+    /// beforeunload のキャンセルはeventnControl.js内で対応しています。
+    /// </remarks>
+    setTimeout(function () {
+
+        // 2018.03.01 USOLV TrungHT【OpenTrusty】Chrome対応に関して 対応START
+        var isChrome = /chrome/.test(navigator.userAgent.toLowerCase());
+        if (isChrome) {
+            chromeShowModalAndPostback(url, dialogParam, postbackRef);
+            return;
+        }
+        // 2018.03.01 USOLV TrungHT【OpenTrusty】Chrome対応に関して 対応END
+
+        var ret = window.showModalDialog(url, window, dialogParam);
+        if (ret == null) { ret = ''; }
+        postbackRef = postbackRef.replace("'@'", "ret");
+        try {
+            eval(postbackRef);
+        } catch (e) {
+        }
+    }, 0);
+}
+
+// 2018.03.01 USOLV TrungHT【OpenTrusty】Chrome対応に関して 対応START
+function chromeShowModalAndPostback(url, dialogParam, postbackRef) {
+    /// <summary>
+    /// Chromeブラウザを使用した場合、モーダルダイアログを表示する。
+    /// </summary>
+
+    var DefaultWindowWidth = 1024;
+    var DefaultWindowHeight = 768;
+    var lstParam = dialogParam.split(";");
+    var arIt;
+    for (var i = 0; i < lstParam.length; i++) {
+        arIt = lstParam[i].split(":");
+        if (arIt.length > 1) {
+            if (arIt[0] == "dialogWidth") {
+                DefaultWindowWidth = parseInt(arIt[1].replace("px", ""));
+            } else if (arIt[0] == "dialogHeight") {
+                DefaultWindowHeight = parseInt(arIt[1].replace("px", ""));
+            }
+        }
+    }
+    var divElement = document.createElement("div");
+    divElement.setAttribute('id', 'chromedialog');
+    divElement.setAttribute('style', 'padding:0px;margin:0px;');
+    divElement.innerHTML = '<iframe width="' + (DefaultWindowWidth + 5) + '" height="' + (DefaultWindowHeight + 5) + '" style="padding:0px;margin:0px;"></iframe>';
+    document.body.appendChild(divElement);
+
+    $("#chromedialog").dialog({
+        modal: true,
+        resizable: false,
+        width: DefaultWindowWidth + 15,
+        height: DefaultWindowHeight + 55,
+        close: function (event, ui) { $("#chromedialog").dialog("destroy").remove(); }
+    });
+
+    var url = url + "&postback=" + postbackRef;
+    $("#chromedialog").find("iframe").attr("src", url);
+}
+
+function closeModalAndPostback(postbackRef, ret) {
+    /// <summary>
+    /// Chromeブラウザを使用した場合のcallback。
+    /// </summary>
+    postbackRef = postbackRef.replace("'@'", "ret");
+    try {
+        eval(postbackRef);
+    } catch (e) {
+    }
+
+    $("#chromedialog").dialog('destroy').remove();
+}
+// 2018.03.01 USOLV TrungHT【OpenTrusty】Chrome対応に関して 対応END
+
+/*========================*/
+/* 複数選択コントロール用 */
+/*========================*/
+
+function applyCheckBoxList() {
+    $("input.CheckBoxListAll").on('click',function () {
+        $(this).parent().find("input:checkbox:enabled").attr("checked", "checked");
+    });
+    $("input.CheckBoxListNothing").on('click',function () {
+        $(this).parent().find("input:checkbox:enabled").attr("checked", false);
+    });
+}
+
+/*==============*/
+/* 入力補助関数 */
+/*==============*/
+
+function addComma(value) {
+    /// <summary>
+    /// フォーカスOFF 時にカンマを付加します。
+    /// </summary>
+    /// <param name="value" type="String">テキストボックス入力値。</param>
+    /// <returns type="String">カンマが付加された文字列（数値以外が含まれていた場合は指定された文字列）。</returns>
+
+    var tmpNum = '';
+
+    // カンマ編集された文字列が渡された場合はカンマを削除する。
+    var regExpession = /\,/g;
+    tmpNum = value.replace(regExpession, "");
+
+    if (!isNumberFormat(tmpNum)) {
+        return value;
+    }
+
+    //ピリオドのチェック
+    var periodIndex = tmpNum.indexOf(".");
+
+    if (periodIndex == -1) {
+        //入力した値が整数の場合
+        return formatComma(tmpNum);
+    }
+    else {
+        return value;
+    }
+}
+
+function removeComma(value) {
+    /// <summary>
+    /// フォーカスON 時にカンマを除去します。
+    /// </summary>
+    /// <param name="value" type="String">テキストボックス入力値。</param>
+    /// <returns type="String">カンマが除去された文字列。</returns>
+
+    return value.split(",").join("");
+}
+
+function formatComma(value) {
+    /// <summary>
+    /// 整数値にカンマを付加します。
+    /// </summary>
+    /// <param name="value" type="String">整数値。</param>
+    /// <returns type="String">カンマが付加された整数値。</returns>
+
+    // 一度カンマを取り除く
+    value = removeComma(value);
+    // 先頭の0も取り除きカンマを付加
+    value = dropZero(value);
+    for (var i = 0; i < (value.length / 3); i++) {
+        value = value.replace(/^([+-]?\d+)(\d\d\d)/, "$1,$2");
+    }
+    return value;
+}
+
+function addSlash(value) {
+    /// <summary>
+    /// フォーカスOFF 時にスラッシュを付加します。
+    /// </summary>
+    /// <param name="value" type="String">テキストボックス入力値。</param>
+    /// <returns type="String">スラッシュが付加された文字列（YYYY/MM/DD 形式）。日付として存在しない値の場合は指定された文字列そのもの。</returns>
+
+    // 一度スラッシュを取り除く
+    value = removeSlash(value);
+    if (isEmpty(value)) {
+        // 空っぽ文字列なので，そのままの値を返す
+        return value;
+    }
+
+    if (!isNumeric(value)) {
+        // 半角数字以外が含まれているので，そのまま値を返す
+        return value;
+    }
+
+    if (value.length != 8) {
+        // 最大文字数に達していなければ、そのまま値を返す
+        return value;
+    }
+
+    // 年月日を数値にして分割
+    var year = value.substr(0, 4) - 0;
+    var month = value.substr(4, 2) - 0;
+    var day = value.substr(6, 2) - 0;
+
+    // 数値にしてDateを作成
+    var tmpDate = new Date(year, month - 1, day);
+    if (tmpDate.getFullYear() != year || tmpDate.getMonth() != month - 1 || tmpDate.getDate() != day) {
+        // 変換後の値が入力と違っていれば日付変換できないのでそのまま返す
+        return value;
+    }
+
+    // 正常な日付なのでスラッシュを入れてリターン
+    if (month < 10) {
+        month = "0" + month;
+    }
+    if (day < 10) {
+        day = "0" + day;
+    }
+
+    return year + "/" + month + "/" + day;
+}
+
+function removeSlash(value) {
+    /// <summary>
+    /// フォーカスON 時にスラッシュを除去します。
+    /// </summary>
+    /// <param name="value" type="String">テキストボックス入力値。</param>
+    /// <returns type="String">スラッシュが除去された文字列。</returns>
+
+    return value.split("/").join("");
+}
+
+function addColon(value) {
+    /// <summary>
+    /// フォーカスOFF 時にコロンを付加します。
+    /// </summary>
+    /// <param name="value" type="String">テキストボックス入力値。</param>
+    /// <returns type="String">コロンが追加された文字列（数値以外が含まれていた場合は指定された文字列）。</returns>
+
+    if (value.length != 4 || !isNumeric(value)) {
+        return value;
+    }
+
+    var hour = value.substr(0, 2);
+    var minute = value.substr(2, 2);
+
+    if (hour > 23 || minute > 59) {
+        return value;
+    }
+
+    return hour + ":" + minute;
+}
+
+function removeColon(value) {
+    /// <summary>
+    /// フォーカスON 時にコロンを除去します。
+    /// </summary>
+    /// <param name="value" type="String">テキストボックス入力値。</param>
+    /// <returns type="String">コロンが除去された文字列。</returns>
+    return value.split(":").join("");
+}
+
+/*======================================*/
+/* 初期表示用（スクロール位置のリセット */
+/*======================================*/
+
+function resetScrollPosition() {
+    /// <summary>
+    /// スクロール位置を画面の左上に戻します。
+    /// </summary>
+    $('#__SCROLLPOSITIONX').val("0");
+    $('#__SCROLLPOSITIONY').val("0");
+    WebForm_RestoreScrollPosition = function () {
+        if ((typeof (theForm.oldOnLoad) != "undefined") && (theForm.oldOnLoad != null)) {
+            return theForm.oldOnLoad();
+        }
+        return true;
+    };
+}
+
+/*======================================*/
+/* 検証エラー（スクロール位置のリセット） */
+/*======================================*/
+
+function overrideClientValidate() {
+    /// <summary>
+    /// JavaScriptによる入力チェックに失敗したときに、
+    /// 親フレームのスクロール位置を最上部にする。
+    /// </summary>
+    if (typeof (Page_ClientValidate) != 'function') {
+        return;
+    }
+    var original = Page_ClientValidate;
+    Page_ClientValidate = function (validationGroup) {
+        var result = original.apply(this, arguments);
+        if (!result) {
+            if (window != window.top) {
+                // iframe内でエラーが起きた場合はiframeの最上位をスクロールする
+                window.top.scrollTo(0, 0);
+            }
+        }
+        return result;
+    };
+}
+
+/*　システム共通部品からのみ呼び出される関数　end　*/

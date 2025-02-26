@@ -1,0 +1,2163 @@
+﻿@charset "UTF-8";
+/*
+ # 要素の基本スタイル
+  - ボックスサイズはborder-boxとし、widthにpaddingとborderを含める。
+ */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+  font-size: 13px;
+  margin: 0;
+  padding: 0;
+  word-break: break-all;
+  background: #efefef;
+  position: relative;
+}
+
+label {
+  margin-bottom: 0;
+  margin-right: 10px;
+}
+
+/*
+ # float解除
+```
+<div class="clearfix">
+  <div style="float:left;">
+</div>
+```
+ */
+.clearfix:after, .layout-base:after, .layout-banner:after, .layout-main:after, .layout-aside:after, .layout-footer:after {
+  content: ".";
+  font-size: 0;
+  display: block;
+  clear: both;
+  height: 0;
+  visibility: hidden;
+}
+
+.pull-right {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  float: none;
+}
+
+.scroll {
+  overflow: scroll;
+}
+
+.scroll-auto {
+  overflow: auto;
+}
+
+.scroll-x {
+  overflow-x: scroll;
+  overflow-y: auto;
+}
+
+.scroll-y {
+  overflow-y: scroll;
+  overflow-x: auto;
+}
+
+/*
+ # 見出し
+```
+<h1>申請書入力画面申請書名</h1>
+<h2>ページ内見出し</h2>
+<h3>ページ内見出し2</h3>
+<h4>ページ内見出し3</h4>
+<h5>モーダル見出し</h5>
+```
+ */
+h1 {
+  color: #fff;
+  font-size: 13px;
+  font-weight: bold;
+  margin: 0;
+  width: auto;
+  padding: 1.66667px 20px;
+  text-decoration: none;
+  background: transparent;
+  outline: none;
+  background-position: bottom left, bottom right, top right, top left;
+  background-size: 51% 50%;
+  background-image: -webkit-linear-gradient(45deg, #2ea7e0, #2ea7e0), -webkit-linear-gradient(135deg, #2ea7e0, #2ea7e0), -webkit-linear-gradient(225deg, transparent 8px, #2ea7e0 8px), -webkit-linear-gradient(315deg, #2ea7e0, #2ea7e0);
+  background-image: -ms-linear-gradient(45deg, #2ea7e0, #2ea7e0), -ms-linear-gradient(135deg, #2ea7e0, #2ea7e0), -ms-linear-gradient(225deg, transparent 8px, #2ea7e0 8px), -ms-linear-gradient(315deg, #2ea7e0, #2ea7e0);
+  background-image: -o-linear-gradient(45deg, #2ea7e0, #2ea7e0), -o-linear-gradient(135deg, #2ea7e0, #2ea7e0), -o-linear-gradient(225deg, transparent 8px, #2ea7e0 8px), -o-linear-gradient(315deg, #2ea7e0, #2ea7e0);
+  background-image: -moz-linear-gradient(45deg, #2ea7e0, #2ea7e0), -moz-linear-gradient(135deg, #2ea7e0, #2ea7e0), -moz-linear-gradient(225deg, transparent 8px, #2ea7e0 8px), -moz-linear-gradient(315deg, #2ea7e0, #2ea7e0);
+  background-repeat: no-repeat;
+  line-height: 23px;
+  width: 435px;
+  position: relative;
+}
+
+h2 {
+  color: #fff;
+  font-size: 15.6px;
+  margin: 0 0 1px;
+  width: auto;
+  padding: 3px 20px;
+  background: #0080c1;
+  position: relative;
+  line-height: 1.7;
+}
+
+h3 {
+  color: #737172;
+  font-size: 15.6px;
+  font-weight: bold;
+  margin: 5px 0;
+  position: relative;
+  padding-left: 7.5px;
+}
+
+h4 {
+  color: #737172;
+  font-size: 15.6px;
+  margin: 5px 0;
+  position: relative;
+  font-weight: bold;
+  padding-left: 27.5px;
+}
+
+h4::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 16px;
+  background-color: #027fc2;
+  margin: 2px 3px 2px 0;
+  vertical-align: bottom;
+}
+
+.right-pane h4 {
+  padding-left: 7.5px;
+}
+
+h5 {
+  font-size: 18.2px;
+  font-weight: bold;
+  position: relative;
+}
+
+h6 {
+  font-size: 14px;
+  font-weight: bold;
+  position: relative;
+}
+
+/*
+ # リンク一覧
+ */
+.list-links {
+  list-style: none;
+  padding: 0 5px;
+  margin: 0 auto;
+}
+
+.list-links li {
+  padding: 0;
+  margin: 0 auto 2.5px;
+}
+
+.list-links a {
+  display: inline-block;
+  padding: 2.5px;
+}
+
+/*
+ # 定義リスト（dl）
+```
+<dl>
+  <dt>定義1</dt>
+  <dd>値１
+  <dt>定義2</dt>
+  <dd>値２
+  <dt>定義2</dt>
+  <dd>値３
+</dl>
+```
+ */
+dl {
+  padding: 0;
+  width: 100%;
+}
+
+dl dt, dl dd {
+  vertical-align: middle;
+}
+
+/*
+ # 順序リスト（dl）
+```
+<ol>
+  <li>リスト1</li>
+  <li>リスト2</li>
+  <li>リスト3</li>
+</ol>
+```
+ */
+ol {
+  margin-top: 0;
+}
+
+ol li {
+  margin: 4px;
+}
+
+/*** 汎用クラス ***/
+.clear {
+  clear: both;
+}
+
+/*
+ # ページレイアウト
+ ページサイズは最大960pxを基準。
+それ以下の場合は、画面内横スクロール発生。
+それ以上の場合はリキッドレイアウト。
+ ```
+ <header id="header" role="banner" class="layout-banner">
+  ヘッダー
+ </header>
+ <main id="main-contents" role="main" class="layout-main">
+  メインコンテンツ
+  <section>
+    任意セクション
+  </section>
+ </main>
+ <footer id="footer" role="" class="layout-footer">
+  フッターコンテンツ
+ </footer>
+ ```
+ */
+.layout-base, .layout-banner, .layout-main, .layout-aside, .layout-footer {
+  min-width: 960px;
+  margin: 0 auto;
+  padding: 15px 0;
+  background: #fff;
+  display: block;
+  position: relative;
+}
+
+.layout-main {
+  padding-bottom: 0;
+  padding-top: 5px;
+}
+
+.layout-footer {
+  font-size: 10.4px;
+  text-align: center;
+}
+
+/*
+## ツリービュー用、2カラムレイアウト
+*/
+.two-column {
+  width: 100%;
+  background-color: #efefef;
+}
+
+.left-pane {
+  width: 266px;
+  display: block;
+  float: left;
+  border-right: 4px solid #0080c1;
+  padding: 10px 4px 10px 0;
+  min-width: 25px;
+  max-width: calc(100% - 37px);
+  background: linear-gradient(to right, #efefef 0, #efefef calc(100% - 4px), #fff calc(100% - 4px), #fff 100%);
+}
+
+.left-pane .tree-list {
+  white-space: nowrap;
+}
+
+.left-pane .ui-resizable-e {
+  background-color: #acdcf3;
+  width: 20px;
+  right: 4px;
+}
+
+.right-pane {
+  background-color: #fff;
+  width: calc(100% - 272px);
+  box-sizing: border-box;
+  display: block;
+  float: right;
+  vertical-align: top;
+  overflow: auto;
+  margin-left: -6px;
+  padding-bottom: 10px;
+  padding-right: 0;
+  padding-left: 0;
+  padding-top: 0;
+  min-width: 3%;
+  max-width: calc(100% - 31px);
+}
+
+.right-pane .right-body {
+  min-width: 700px;
+}
+
+/*
+ # フォーム部品
+ */
+/*
+## フォーム部品の基本スタイル
+*/
+input:not([type='button']):not([type='submit']), select, textarea {
+  font-family: inherit;
+  font-size: 13px;
+  border-radius: 4px;
+  box-shadow: none;
+  border-color: #e5e5e5;
+  border-width: 1px;
+  border-style: solid;
+}
+
+input:not([type='button']):not([type='submit']):disabled, select:disabled, textarea:disabled {
+  background-color: #ebebe4;
+  color: #545454;
+}
+
+input[type="button"], input[type="submit"], button, label {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/*
+### maxlength属性のテキスト入力項目の表示幅
+'''
+<input type="text" maxlength="6">
+'''
+*/
+input[type="text"][maxlength="0"] {
+  width: 0em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="1"] {
+  width: 1em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="2"] {
+  width: 2em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="3"] {
+  width: 3em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="4"] {
+  width: 4em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="5"] {
+  width: 5em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="6"] {
+  width: 6em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="7"] {
+  width: 7em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="8"] {
+  width: 8em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="9"] {
+  width: 9em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="10"] {
+  width: 10em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="11"] {
+  width: 11em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="12"] {
+  width: 12em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="13"] {
+  width: 13em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="14"] {
+  width: 14em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="15"] {
+  width: 15em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="16"] {
+  width: 16em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="17"] {
+  width: 17em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="18"] {
+  width: 18em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="19"] {
+  width: 19em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="20"] {
+  width: 20em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="21"] {
+  width: 21em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="22"] {
+  width: 22em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="23"] {
+  width: 23em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="24"] {
+  width: 24em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="25"] {
+  width: 25em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="26"] {
+  width: 26em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="27"] {
+  width: 27em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="28"] {
+  width: 28em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="29"] {
+  width: 29em;
+  ime-mode: disabled;
+}
+
+input[type="text"][maxlength="30"] {
+  width: 30em;
+  ime-mode: disabled;
+}
+
+/*
+### textareaの改行設定
+*/
+textarea {
+  white-space: pre-wrap;
+}
+
+::-webkit-input-placeholder {
+  color: #6d6d6d;
+  opacity: 1;
+}
+
+:-moz-placeholder {
+  color: #6d6d6d;
+}
+
+::-moz-placeholder {
+  color: #6d6d6d;
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  color: #6d6d6d;
+}
+
+:placeholder-shown {
+  color: #6d6d6d;
+}
+
+input[type="checkbox"], input[type="radio"] {
+  opacity: 0;
+  height: 0;
+  width: 0;
+  position: absolute;
+}
+
+input[type="checkbox"] + label, input[type="radio"] + label {
+  padding-left: 18px;
+  position: relative;
+  display: inline-block;
+  height: 10px;
+  vertical-align: middle;
+  line-height: 1.2;
+  font-weight: normal;
+}
+
+input[type="checkbox"] + label::before, input[type="radio"] + label::before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  top: 0;
+  left: 0;
+}
+
+input[type="checkbox"]:disabled + label, input[type="radio"]:disabled + label {
+  color: #717171;
+}
+
+input[type="checkbox"]:disabled + label::before, input[type="radio"]:disabled + label::before {
+  opacity: 0.6;
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+
+input[type="checkbox"]:focus + label::before, input[type="radio"]:focus + label::before {
+  box-shadow: #4D90FE 0px 0px 4px;
+  border: 1px solid #4D90FE;
+}
+
+input[type="checkbox"] + label::before {
+    background: url("images/icon/check_off.png") no-repeat center center;
+    position: absolute;
+}
+
+input[type="checkbox"]:checked + label::before {
+  background: url("images/icon/check_on.png") no-repeat center center;
+}
+
+input[type="radio"] + label::before {
+  background: url("images/icon/radio_off.png") no-repeat center center;
+}
+
+input[type="radio"]:checked + label::before {
+  background: url("images/icon/radio_on.png") no-repeat center center;
+}
+
+input[type="radio"]:focus + label::before {
+  border-radius: 7px;
+}
+
+/*
+## 編集画面入力フォームのtable表示
+*/
+.table-form {
+  width: calc(100% - 20px);
+  table-layout: fixed;
+  margin-bottom: 5px;
+}
+
+.table-form tr:nth-of-type(odd) {
+  background-color: #fff !important;
+}
+
+.table-form tr:nth-of-type(even) {
+  background-color: #f2fafd !important;
+}
+
+.table-form th {
+  background-color: #d5edf9;
+  vertical-align: middle !important;
+  width: 120px;
+  position: relative;
+  padding: 5px 7.5px !important;
+}
+
+.table-form th[colspan='2'] {
+  width: 240px;
+}
+
+.table-form th .form-item-add,
+.table-form th .form-item-remove {
+  cursor: pointer;
+  float: right;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.table-form th .form-item-add {
+  background-image: url("images/icon/icon_plus_off.png");
+  border: 0 none;
+  min-width: 0;
+  margin-right: 5px;
+}
+
+.table-form th .form-item-add:hover {
+  background-image: url("images/icon/icon_plus_on.png");
+}
+
+.table-form th .form-item-remove {
+  background-image: url("images/icon/icon_minus_off.png");
+  border: 0 none;
+  min-width: 0;
+}
+
+.table-form th .form-item-remove:hover {
+  background-image: url("images/icon/icon_minus_off.png");
+}
+
+.table-form th .form-item-remove:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+.table-form td {
+  width: calc(100% - 240px);
+  padding: 5px !important;
+  position: relative;
+}
+
+.table-form td > p {
+  margin: 0;
+}
+
+.table-form td > p:not(:first-child) {
+  margin-top: 5px;
+}
+
+.table-form td label {
+  display: inline-block;
+  max-width: 100%;
+  font-weight: normal;
+  margin: 0;
+}
+
+.table-form td label:not(:first-child) {
+  margin-left: 5px;
+}
+
+.table-form td label input[type="radio"], .table-form td label input[type="checkbox"] {
+  margin-right: 2.5px;
+}
+
+.table-form textarea {
+  width: 100%;
+  resize: vertical;
+}
+
+.table-form input[type="text"].large {
+  width: 100%;
+}
+
+.table-form select.large {
+  width: 100%;
+}
+
+.table-form th.form-table-secondary-label {
+  width: 16%;
+}
+
+/*
+## カレンダー表示
+*/
+.calendar-icon {
+  cursor: pointer;
+  top: -2px;
+}
+
+.calendar-icon::before {
+  background: url("images/icon/icon_calendar.png") no-repeat center center #fff;
+  color: transparent;
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.calendar-icon:hover::before {
+  opacity: .8;
+}
+
+.ui-datepicker .ui-datepicker-header {
+  background: #2ea7e0;
+  border: 0 none;
+}
+
+/*
+## オートコンプリート表示調整
+*/
+.ui-menu {
+  overflow-y: auto;
+  max-height: 250px;
+  overflow-x: hidden;
+  background-color: #fff;
+}
+
+.ui-menu .ui-menu-item {
+  background: none;
+  background-color: #fff;
+  border: 0 none;
+}
+
+.ui-menu .ui-menu-item .ui-state-active {
+  color: #fff;
+  border: 0 none;
+  font-weight: normal;
+  background: #26A0DA;
+  text-decoration: none;
+}
+
+/*
+ # エラー表示
+ */
+.has-error input {
+  background-color: #fff;
+  border-color: #a94442;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.has-error input[type="text"] {
+  border: 1px solid #a94442;
+}
+
+.has-error input:focus {
+  border-color: #843534;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;
+  outline: 0;
+}
+
+.alert-icon,
+.error-icon {
+  display: none;
+}
+
+.has-error th {
+  background-color: #FFCECE;
+}
+
+.has-error td {
+  background-color: #FFECEC;
+}
+
+.has-error .error-icon {
+  display: inline-block;
+}
+
+.has-alert th {
+  background-color: #FCFFCE;
+}
+
+.has-alert td {
+  background-color: #FFFEEC;
+}
+
+.has-alert .alert-icon {
+  display: inline-block;
+}
+
+.error-message {
+  color: #a94442;
+}
+
+.tooltip-inner {
+  background-color: #fff;
+  color: #333;
+}
+
+.tooltip.top .tooltip-arrow {
+  border-top-color: #fff;
+}
+
+/*
+ # 必須マーク
+ */
+.required-mark {
+  background-color: #c10e24;
+  color: #fff;
+  display: inline-block;
+  width: 36px;
+  box-sizing: border-box;
+  text-align: center;
+  padding: 0;
+  line-height: 16px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  vertical-align: middle;
+}
+
+input.calendar {
+  width: 0;
+  height: 20px;
+  border: 0 none;
+}
+
+/*
+ # 検索条件
+ */
+.search-cond-area {
+  padding: 0 20px;
+  background-color: #efefef;
+}
+
+.search-cond-area .search-cond {
+  padding: 10px 0;
+}
+
+.search-cond-area .search-cond-setter {
+  margin-bottom: 3px;
+}
+
+.search-cond-area .input-supplement {
+  color: #717171;
+}
+
+.search-cond-area dl {
+  margin-bottom: 3px;
+}
+
+.search-cond-area dt, .search-cond-area dd {
+  position: relative;
+  display: inline-block;
+}
+
+.search-cond-area dt {
+  min-width: 80px;
+  vertical-align: top;
+  text-align: right;
+  padding-top: 3px;
+}
+
+.search-cond-area .search-submit {
+  display: block;
+  margin: 0 auto;
+}
+
+.search-cond-area .first-cond,
+.search-cond-area .second-cond {
+  display: inline-block;
+  width: 49.5%;
+  vertical-align: top;
+  padding-bottom: 20px;
+}
+
+/*
+ # ボタン
+ */
+/*
+## 標準ボタン
+```
+下記同じ表示
+<input type="button" value="ラベル">
+<input type="submit" value="ラベル">
+<a class="btn" href="">ラベル</a>
+<bubbon class="btn">ラベル</button>
+```
+*/
+.btn, [type="button"], [type="submit"] {
+  color: #fff;
+  border-radius: 5px;
+  border: 1px solid #d7d7d7;
+  background-color: #004894;
+  background-image: none;
+  padding: 1px 3px;
+  line-height: 20px;
+  min-width: 100px;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+.btn:disabled, [type="button"]:disabled, [type="submit"]:disabled {
+  background-color: #ebebe4;
+  color: #545454;
+}
+
+.btn:hover, .btn:focus, .btn:active, [type="button"]:hover, [type="button"]:focus, [type="button"]:active, [type="submit"]:hover, [type="submit"]:focus, [type="submit"]:active {
+  color: #fff;
+  background-color: #6fcae9;
+}
+
+.btn a, [type="button"] a, [type="submit"] a {
+  color: #fff;
+}
+
+.btns {
+  margin: 5px 20px;
+}
+
+.table + .btns {
+  margin: 5px;
+}
+
+/*
+## 申請書編集画面メインボタン
+```
+<div class="main-btns">
+  <input type="button" class="main-btn" value="一括入力チェック">
+  <input type="button" class="main-btn" value="提出用申請データ形式一覧表示">
+  <input type="button" class="main-btn" value="鑑の印刷">
+  <input type="button" class="main-btn" value="提出用出力">
+  <input type="button" class="main-btn" disabled="" value="モード切替">
+</div>
+```
+*/
+.main-btns {
+  display: flex;
+  justify-content: space-around;
+  width: calc(100% - 20px);
+  margin-bottom: 10px;
+}
+
+.main-btn {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fefefc+0,fdfdff+9,fcfefd+11,f6f9fe+16,f6fcfc+18,f1f9fb+25,ebf4f9+43,e1f2f9+61,dcedf5+70,d2eaf6+91,d0e8f2+93,d0e8f4+95,cee6f0+100 */
+  background: #fefefc;
+  /* Old browsers */
+  /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZlZmVmYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjklIiBzdG9wLWNvbG9yPSIjZmRmZGZmIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTElIiBzdG9wLWNvbG9yPSIjZmNmZWZkIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTYlIiBzdG9wLWNvbG9yPSIjZjZmOWZlIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTglIiBzdG9wLWNvbG9yPSIjZjZmY2ZjIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMjUlIiBzdG9wLWNvbG9yPSIjZjFmOWZiIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNDMlIiBzdG9wLWNvbG9yPSIjZWJmNGY5IiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNjElIiBzdG9wLWNvbG9yPSIjZTFmMmY5IiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNzAlIiBzdG9wLWNvbG9yPSIjZGNlZGY1IiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iOTElIiBzdG9wLWNvbG9yPSIjZDJlYWY2IiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iOTMlIiBzdG9wLWNvbG9yPSIjZDBlOGYyIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iOTUlIiBzdG9wLWNvbG9yPSIjZDBlOGY0IiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2NlZTZmMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+  background: -moz-linear-gradient(top, #fefefc 0%, #fdfdff 9%, #fcfefd 11%, #f6f9fe 16%, #f6fcfc 18%, #f1f9fb 25%, #ebf4f9 43%, #e1f2f9 61%, #dcedf5 70%, #d2eaf6 91%, #d0e8f2 93%, #d0e8f4 95%, #cee6f0 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #fefefc 0%, #fdfdff 9%, #fcfefd 11%, #f6f9fe 16%, #f6fcfc 18%, #f1f9fb 25%, #ebf4f9 43%, #e1f2f9 61%, #dcedf5 70%, #d2eaf6 91%, #d0e8f2 93%, #d0e8f4 95%, #cee6f0 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #fefefc 0%, #fdfdff 9%, #fcfefd 11%, #f6f9fe 16%, #f6fcfc 18%, #f1f9fb 25%, #ebf4f9 43%, #e1f2f9 61%, #dcedf5 70%, #d2eaf6 91%, #d0e8f2 93%, #d0e8f4 95%, #cee6f0 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefc', endColorstr='#cee6f0',GradientType=0 );
+  /* IE6-8 */
+  border-left: 1px solid #399dcf;
+  border-top: 0px solid #fff;
+  border-bottom: 1px solid #e5f2fa;
+  border-right: 1px solid #bedff0;
+  height: 45px;
+  border-radius: 0;
+  color: #014c73;
+  width: 20%;
+}
+
+.main-btn:hover, .main-btn:active, .main-btn:focus {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#d9edf6+0,cfe5f3+2,cde8f3+4,ffffff+100 */
+  background: #d9edf6;
+  /* Old browsers */
+  /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Q5ZWRmNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjIlIiBzdG9wLWNvbG9yPSIjY2ZlNWYzIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNCUiIHN0b3AtY29sb3I9IiNjZGU4ZjMiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjEiLz4KICA8L2xpbmVhckdyYWRpZW50PgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InVybCgjZ3JhZC11Y2dnLWdlbmVyYXRlZCkiIC8+Cjwvc3ZnPg==);
+  background: -moz-linear-gradient(top, #d9edf6 0%, #cfe5f3 2%, #cde8f3 4%, #ffffff 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #d9edf6 0%, #cfe5f3 2%, #cde8f3 4%, #ffffff 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #d9edf6 0%, #cfe5f3 2%, #cde8f3 4%, #ffffff 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d9edf6', endColorstr='#ffffff',GradientType=0 );
+  /* IE6-8 */
+  color: #004b73;
+}
+
+.main-btn[disabled] {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,d8d6d7+91,d3d2d0+100 */
+  background: #ffffff;
+  /* Old browsers */
+  /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjkxJSIgc3RvcC1jb2xvcj0iI2Q4ZDZkNyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkM2QyZDAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+  background: -moz-linear-gradient(top, #ffffff 0%, #d8d6d7 91%, #d3d2d0 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #ffffff 0%, #d8d6d7 91%, #d3d2d0 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #ffffff 0%, #d8d6d7 91%, #d3d2d0 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#d3d2d0',GradientType=0 );
+  /* IE6-8 */
+  color: #898788;
+}
+
+/*
+## 戻るボタン
+通常h2ヘッダ内で使用する想定
+```
+<h2>h2ヘッダ
+  <input type="button" class="back-btn" value="前画面へ戻る">
+</h2>
+```
+*/
+.back-btn {
+  position: absolute;
+  right: 20px;
+  top: 6px;
+  background-color: transparent;
+  text-decoration: underline;
+  border: 0 none;
+  padding-right: 20px;
+  background: #0080c1 url("images/icon/icon_back.png") no-repeat center center;
+  background-position: right center;
+}
+
+/* 2021/10/12 YSL浅野 OT下期対応No.1START */
+/*
+## 画面更新ボタン
+通常h2ヘッダ内で使用する想定
+```
+<h2>h2ヘッダ
+  <input type="button" class="refresh-btn" value="画面更新">
+</h2>
+```
+*/
+.refresh-btn {
+    position: absolute;
+    right: 30px;
+    top: 6px;
+    background-color: transparent;
+    text-decoration: underline;
+    border: 0 none;
+    padding-right: 10px;
+    background: #0080c1 url("images/icon/icon_back.png") no-repeat center center;
+    background-position: right center;
+}
+/* 2021/10/12 YSL浅野 OT下期対応No.1END */
+
+/*
+## トップメインボタン
+トップ画面のメインボタンとなる中段の大きいサイズのボタン。
+
+*/
+.top-main-menu {
+  margin: 12px 20px;
+}
+
+.main-menu {
+  position: relative;
+  line-height: 32px;
+  width: 170px;
+  padding-left: 10px;
+}
+
+.main-menu-no-icon {
+  position: relative;
+  line-height: 32px;
+  width: 170px;
+}
+
+.main-menu {
+  background-repeat: no-repeat;
+}
+
+.main-menu.add-new-btn {
+  background-image: url("images/icon/icon_newfile.png");
+  background-position: 18px center;
+}
+
+.main-menu.apply-search-btn {
+  background-image: url("images/icon/icon_search.png");
+  background-position: 18px center;
+}
+
+.main-menu.apply-import-btn {
+  background-image: url("images/icon/icon_import.png");
+  background-position: 18px center;
+}
+
+    .main-menu.edit-btn {
+        background-image: url("images/icon/icon_edit.png");
+        background-position: 18px center;
+    }
+
+/* マスタのCSV登録・CSV出力_GNX韓_START */
+/*
+## CSVエリア、ボタン
+*/
+.clearfix:after {
+    display: block;
+    clear:both;
+}
+.edit-area {
+    margin: 12px 20px;
+    float: left;
+}
+.csv-cond-area {
+    padding: 12px 20px;
+    float: right;
+    text-align: right;
+    display: inline-flex;
+}
+.csv-menu {
+    position: relative;
+    line-height: 32px;
+    width: 110px;
+    padding-left: 20px;
+    margin-left: 10px;
+}
+.csv-menu.csv-btn {
+    background-image: url("images/icon/icon_csv.png");
+    background-position: 10px center;
+    background-repeat: no-repeat;
+}
+/* マスタのCSV登録・CSV出力_GNX韓_E N D */
+
+/*
+## 一覧テーブル内、アイコンのみ表示ボタン
+トップ画面のメインボタンとなる中段の大きいサイズのボタン。
+
+*/
+td .migrate-btn,
+td .edit-btn {
+  display: block;
+  width: 42px;
+  height: 28px;
+  margin: 0 auto;
+  min-width: 0;
+}
+
+td .migrate-btn {
+  background: #898989 url("images/icon/icon_migration.png") no-repeat center center;
+}
+
+td .migrate-btn:hover, td .migrate-btn:focus, td .migrate-btn:active {
+  background-color: #898989;
+  opacity: 0.5;
+}
+
+td .edit-btn {
+  background: #004894 url("images/icon/icon_edit.png") no-repeat center center;
+}
+
+/*
+## 検索アイコン(虫眼鏡)付きボタン
+
+*/
+.btn.icon-search, button.icon-search, [type="button"].icon-search {
+  position: relative;
+  padding-left: 10px;
+  background-image: url("images/icon/icon_search.png");
+  background-size: 14.4px 16.8px;
+  background-repeat: no-repeat;
+  background-position: 6px center;
+}
+
+/*
+## NEW!アイコン
+
+*/
+.info-new {
+  background: url("images/icon/new.png") no-repeat center center;
+  display: inline-block;
+  width: 46px;
+  height: 16px;
+  vertical-align: middle;
+}
+
+/*
+## 別ブラウザ画面表示アイコン
+リンク先画面が別サイト、あるいは別ウィンドウで表示される場合の目印
+
+*/
+.info-another-window {
+  background: url("images/icon/another_window.png") no-repeat center center;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+}
+
+/*
+ # パンくず
+```
+<div class="breadcrumb">
+  <ul>
+    <li><a href="top.html">トップ</a></li>
+    <li><a href="xxx.html">1階層上ページ</a></li>
+    <li><span>現在ページ</span></li>
+  </ul>
+</div>
+```
+ */
+.breadcrumb {
+  display: block;
+  margin: 0 auto 5px;
+  background: 0 none;
+  padding: 0 0 0 20px;
+  font-size: 11.7px;
+}
+
+.breadcrumb ul {
+  padding: 0;
+  margin: 0;
+}
+
+.breadcrumb li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.breadcrumb li:after {
+  content: ">";
+}
+
+.breadcrumb li:last-child:after {
+  content: "";
+}
+
+.breadcrumb a, .breadcrumb span {
+  padding: 1.25px 2.5px;
+  display: inline-block;
+  color: #9f9f9f;
+}
+
+.breadcrumb span {
+  color: #23527C;
+}
+
+.breadcrumb a {
+  text-decoration: underline;
+}
+
+.breadcrumb a:hover {
+  color: #23527C;
+}
+
+/*
+ # 共通ヘッダー
+ */
+header {
+  background-color: #2D9FD3 !important;
+  position: relative;
+  height: 45px;
+  padding: 0 !important;
+}
+
+header img.logo {
+  height: 100%;
+}
+
+header .user {
+  position: absolute;
+  color: #fff;
+  right: 20px;
+  bottom: 5px;
+}
+
+header .user-name {
+  margin-right: 5px;
+}
+
+header .amount-to-use-litile,
+header .amount-to-use-much,
+header .amount-to-use-fill,
+header .amount-to-use-full {
+  position: absolute;
+  width: 162px;
+  height: 28px;
+  right: 300px;
+  top: 7px;
+}
+
+header .amount-to-use-litile {
+  background-image: url('images/icon/use_strage_little.png');
+}
+
+header .amount-to-use-much {
+  background-image: url('images/icon/use_strage_much.png');
+}
+
+header .amount-to-use-fill {
+  background-image: url('images/icon/use_strage_fill.png');
+}
+
+header .amount-to-use-full {
+  background-image: url('images/icon/use_strage_full.png');
+}
+
+header .amount-to-use-value-litile,
+header .amount-to-use-value-much,
+header .amount-to-use-value-fill,
+header .amount-to-use-value-full {
+  position: absolute;
+  width: 162px;
+  height: 28px;
+  left: 64px;
+  top: 9px;
+  font-size: 10px;
+}
+
+header .amount-to-use-value-litile,
+header .amount-to-use-value-much {
+  color: #959595;
+}
+
+header .amount-to-use-value-fill,
+header .amount-to-use-value-full {
+  color: red;
+}
+
+header .logout-btn {
+  border-radius: 0;
+  border: 1px solid #cce9f7;
+  color: #fff;
+  height: 35px;
+  width: 110px;
+  padding-right: 24px;
+  background: transparent url("images/icon/logout.png") no-repeat 83px center;
+}
+
+/*
+## ヘルプ
+*/
+.help-wrapper {
+  position: absolute;
+  right: 20px;
+  top: 5px;
+}
+
+#help:hover img,
+#faq:hover img,
+#maintenance:hover img {
+  opacity: 0.8;
+}
+
+/* メンテナンスメニュー */
+#maintenanceMenu{
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    display: none;
+}
+
+/*
+ # フッターコンテンツ
+ */
+/*
+## Copyright
+*/
+.footer-contents {
+  white-space: pre-wrap;
+}
+
+/*
+ # 一覧テーブル
+ */
+.table-wrapper {
+  width: calc(100% - 40px);
+  margin-bottom: 5px;
+  margin-left: 20px;
+}
+
+.table-wrapper .table-list {
+  width: 100%;
+}
+
+.table-list {
+  width: calc(100% - 20px);
+  max-width: 100%;
+  margin-bottom: 0;
+}
+
+.table-list > thead > tr > th, .table-list > tbody > tr > th {
+  background-color: #2aa7df;
+  font-size: 14.3px;
+  color: #fff;
+  padding: 7px 3px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.table-list > tbody > tr:nth-of-type(even) > td {
+  background-color: #F0F7FC;
+}
+
+.table-list > tbody > tr:nth-of-type(odd) > td {
+  background-color: #fff;
+}
+
+.table-list > tbody > tr td {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.table-list > tbody > tr.table-row-active > td {
+  background-color: #FFD68A;
+}
+
+.table-list .row-upper-btn, .table-list .row-downer-btn {
+  height: 10px;
+  position: relative;
+  cursor: pointer;
+  display: block;
+}
+
+.table-list .row-upper-btn:hover::before, .table-list .row-downer-btn:hover::before {
+  opacity: .5;
+}
+
+.table-list .row-upper-btn::before {
+  position: absolute;
+  top: -3px;
+  content: "";
+  font-size: 0;
+  vertical-align: middle;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid #2ca8de;
+}
+
+.table-list .row-downer-btn::before {
+  position: absolute;
+  top: 3px;
+  content: "";
+  font-size: 0;
+  vertical-align: middle;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-top: 5px solid #2ca8de;
+}
+
+/*
+## 複数行見切り設定
+*/
+.table-list .clamp p {
+  white-space: normal;
+  margin: 0;
+  overflow: hidden;
+  font-size: 13px;
+  height: 6.9em;
+  line-height: 1.4;
+  position: relative;
+}
+
+.table-list .clamp p:before,
+.table-list .clamp p:after {
+  position: absolute;
+}
+
+.table-list .clamp p:before {
+  content: " ...";
+  top: 5.6em;
+  right: 0;
+}
+
+.table-list .clamp p:after {
+  content: "";
+  height: 100%;
+  width: 100%;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) .clamp p:before, .table-striped > tbody > tr:nth-of-type(odd) .clamp p:after {
+  background: #fff;
+}
+
+.table-striped > tbody > tr:nth-of-type(even) .clamp p:before, .table-striped > tbody > tr:nth-of-type(even) .clamp p:after {
+  background: #F0F7FC;
+}
+
+/*
+## 列幅個別指定
+*/
+/* 行選択 */
+.table-list .th-checkall, .table-list .col-checker {
+  width: 30px;
+  min-width: 30px;
+  padding: 0;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.table-list .th-checkall input[type="checkbox"] + label, .table-list .col-checker input[type="checkbox"] + label {
+  width: 100%;
+  padding: 0;
+  height: 30px;
+}
+
+.table-list .th-checkall input[type="checkbox"] + label::before, .table-list .col-checker input[type="checkbox"] + label::before {
+  top: calc(50% - 7px);
+  left: calc(50% - 7px);
+}
+
+/* 行入れ替え列 */
+.table-list td.row-replace {
+  padding: 0 4px;
+  vertical-align: middle;
+  width: 20px;
+  min-width: 20px;
+}
+
+/* No列 */
+.table-list .col-num, .table-list th.no {
+  width: 45px;
+  min-width: 45px;
+}
+
+.table-list td.col-num {
+  vertical-align: middle;
+}
+
+.table-list td.no {
+  text-align: right;
+}
+
+/* ステータス列 */
+.table-list td.status {
+  width: 90px;
+}
+
+/* 年月日 */
+.table-list th[class$="_date"], .table-list td[class$="_date"] {
+  width: 150px;
+  text-align: center;
+}
+
+/* アイコンボタン列 */
+.table-list td.migration_btn,
+.table-list td.edit_btn {
+  padding: 3px;
+  width: 62px;
+}
+
+/* ファイルID列 */
+.table-list .applicant_id {
+  width: 100px;
+}
+
+/* 様式番号 */
+.table-list .forma_no {
+  width: 100px;
+}
+
+/*
+ # ツリービュー
+ */
+.tree-list {
+  position: relative;
+  overflow: hidden;
+  padding: 6px 0 16px 12px;
+}
+
+.tree-list a {
+  margin-top: -3px;
+  display: block;
+  color: #004a71;
+  padding-left: 5px;
+}
+
+.tree-list .active > a {
+  background-color: #004870;
+  color: #fff;
+}
+
+.tree-list .tree-list-opener {
+  position: absolute;
+  top: 0;
+  right: 1px;
+  z-index: 100;
+}
+
+.tree-list .tree-list-opener .close, .tree-list .tree-list-opener .open {
+  cursor: pointer;
+  float: none;
+  position: relative;
+  content: "";
+  font-size: 0;
+  vertical-align: middle;
+  opacity: 1;
+  width: 18px;
+  height: 18px;
+}
+
+.tree-list .tree-list-opener .close::before {
+  content: " ";
+  display: block;
+  border-top: 6px solid transparent;
+  border-left: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 6px solid #0181c2;
+  position: absolute;
+  right: 6px;
+  top: 3px;
+}
+
+.tree-list .tree-list-opener .close:hover::before {
+  border-right: 6px solid #fff;
+}
+
+.tree-list .tree-list-opener .open::before {
+  content: " ";
+  display: block;
+  border-top: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 6px solid #0181c2;
+  position: absolute;
+  left: 6px;
+  top: 3px;
+}
+
+.tree-list .tree-list-opener .open:hover::before {
+  border-left: 6px solid #fff;
+}
+
+.tree-list .tree-icon {
+  vertical-align: middle;
+  margin-right: 3px;
+  margin-left: -3px;
+}
+
+.treeview {
+  margin-top: 4px;
+}
+
+.treeview ul {
+  margin-top: 4px;
+  background-color: transparent;
+}
+
+.treeview .hover {
+  color: #0081bf;
+}
+
+/*
+ # LeanModal表示調整
+ */
+.modal-content {
+  background-color: #F8F8F8;
+}
+
+.modal-header {
+  padding: 5px 20px;
+  background-color: #2ea7e0;
+  border-radius: 5px 5px 0 0;
+  color: #fff;
+}
+
+.modal-header button {
+  min-width: 30px;
+  padding: 5px;
+}
+
+.modal-header .close {
+  z-index: 3000;
+  position: absolute;
+  right: 8px;
+  top: 5px;
+}
+
+.modal-body {
+  padding: 0;
+}
+
+.modal-body img {
+  width: 100%;
+}
+
+.modal-footer {
+  padding: 10px;
+}
+
+#lean_overlay {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: #000;
+}
+
+#change_input_category {
+  position: absolute !important;
+  left: 478px !important;
+  top: 0;
+}
+
+#headline-top [rel='leanModal'] {
+  margin-left: 25px;
+}
+
+/*
+ # 作成状況ステータス表示
+ */
+/* 作成中 */
+.status-editing {
+  background-color: #fff;
+  border: 2px solid #c30d26;
+  color: #c30d26;
+  line-height: 26px;
+  height: 28px;
+  width: 70px;
+  margin: 0 auto;
+  vertical-align: middle;
+  text-align: center;
+  display: block;
+  box-sizing: border-box;
+}
+
+/* 作成済 */
+.status-edited {
+  background-color: #0364a8;
+  color: #fff;
+  line-height: 26px;
+  height: 28px;
+  width: 70px;
+  margin: 0 auto;
+  vertical-align: middle;
+  text-align: center;
+  display: block;
+  box-sizing: border-box;
+}
+
+/* 出力済 */
+.status-output {
+  background-color: #00986f;
+  color: #fff;
+  line-height: 26px;
+  height: 28px;
+  width: 70px;
+  margin: 0 auto;
+  vertical-align: middle;
+  text-align: center;
+  display: block;
+  box-sizing: border-box;
+}
+
+/* 確定済 */
+.status-confirmed {
+  background-color: #00986f;
+  color: #fff;
+  line-height: 26px;
+  height: 28px;
+  width: 70px;
+  margin: 0 auto;
+  vertical-align: middle;
+  text-align: center;
+  display: block;
+  box-sizing: border-box;
+}
+
+/* 提出済 */
+.status-submit {
+  background-color: #007e8a;
+  color: #fff;
+  line-height: 26px;
+  height: 28px;
+  width: 70px;
+  margin: 0 auto;
+  vertical-align: middle;
+  text-align: center;
+  display: block;
+  box-sizing: border-box;
+}
+
+/* 修正中 */
+.status-correcting {
+  background-color: #fff;
+  border: 2px solid #c30d23;
+  color: #c30d23;
+  line-height: 26px;
+  height: 28px;
+  width: 70px;
+  margin: 0 auto;
+  vertical-align: middle;
+  text-align: center;
+  display: block;
+  box-sizing: border-box;
+}
+
+/* 修正済 */
+.status-corrected {
+  background-color: #0097e0;
+  color: #fff;
+  line-height: 26px;
+  height: 28px;
+  width: 70px;
+  margin: 0 auto;
+  vertical-align: middle;
+  text-align: center;
+  display: block;
+  box-sizing: border-box;
+}
+
+/* 取下げ */
+.status-dropped {
+  background-color: #898989;
+  color: #fff;
+  line-height: 26px;
+  height: 28px;
+  width: 70px;
+  margin: 0 auto;
+  vertical-align: middle;
+  text-align: center;
+  display: block;
+  box-sizing: border-box;
+}
+
+/* 未入力 */
+.status-notenter {
+  background-color: #c9c9c9;
+  color: #333;
+  line-height: 26px;
+  height: 28px;
+  width: 70px;
+  margin: 0 auto;
+  vertical-align: middle;
+  text-align: center;
+  display: block;
+  box-sizing: border-box;
+}
+
+.table-list td.status {
+  padding: 3px;
+}
+
+/*
+# フリーテキスト入力
+*/
+/*
+## プレビュー表示
+*/
+/* 上付き表示 */
+sup.ue {
+  font-size: 10px;
+  top: -1em;
+}
+
+/* 下付き表示 */
+sub.sita {
+  font-size: 10px;
+  bottom: 0;
+}
+
+/* 下線表示 */
+span.line {
+  text-decoration: underline;
+}
+
+/* 列番号 */
+ul.colnumber {
+  list-style: none;
+  padding: 0;
+  letter-spacing: -1em;
+  white-space: nowrap;
+  margin-bottom: 0;
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+ul.colnumber li {
+  display: inline-block;
+  font-size: 10px;
+  width: 8px;
+  letter-spacing: normal;
+  text-align: center;
+  float: left;
+}
+
+/*
+## テキスト情報表示
+*/
+.textarea-info {
+  width: 100%;
+  margin-top: 10px;
+}
+
+/*
+## フリーテキスト入力、表示エリアレイアウト
+*/
+.editor-area {
+  width: 605px;
+  display: inline-block;
+}
+
+.textarea-wrapper,
+.previewarea-wrapper {
+  width: 100%;
+  overflow: visible;
+  height: 266px;
+}
+
+.previewarea-wrapper {
+  margin-top: 5px;
+  overflow: hidden;
+}
+
+.previewarea {
+  overflow-y: scroll;
+  padding: 2px 3px;
+  background-color: #fff;
+  border: 1px solid #f0f0f0;
+  margin-top: -1px;
+}
+
+.previewarea .end {
+  display: inline-block;
+  color: #aaa;
+}
+
+.textarea-info dl {
+  display: inline-block;
+  width: auto;
+  min-width: 110px;
+  margin-bottom: 8px;
+}
+
+.textarea-info dd {
+  word-break: break-word;
+}
+
+textarea.freetext-input, .previewarea {
+  font-size: 20px;
+  line-height: 22px;
+  font-family: "MS Gothic", monospace, sans-serif;
+  transform: scale(0.8);
+  transform-origin: left top;
+  margin-left: 7px;
+  width: 745px;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+textarea.freetext-input {
+  resize: none;
+  overflow-y: scroll;
+}
+
+.frreetext-edit-btns {
+  display: inline-block;
+  margin-top: 5px;
+  width: 110px;
+  vertical-align: top;
+}
+
+.frreetext-edit-btns .btn {
+  display: inline-block;
+  width: 110px;
+  height: 30px;
+  vertical-align: middle;
+  line-height: 30px;
+  margin-top: 8px;
+  background-color: #898989;
+}
+
+.frreetext-edit-btns .btn .math {
+  font-size: 18px;
+}
+
+.frreetext-edit-btns .btn .math sup, .frreetext-edit-btns .btn .math sub {
+  font-size: 10px;
+}
+
+.frreetext-edit-btns .btn:hover,
+.frreetext-edit-btns .btn:active,
+.frreetext-edit-btns .btn:focus {
+  opacity: 0.5;
+}
+
+/* 数学記号表示 */
+.math {
+  font-family: 'Cambria Math', 'STIXGeneral', 'STIXGeneral-Regular', 'sans-serif';
+  font-weight: bold;
+  font-style: normal;
+}
+
+.math .supsub {
+  display: inline-block;
+  margin-left: -2px;
+}
+
+.math .supsub sup, .math .supsub sub {
+  position: relative;
+  display: block;
+  font-size: .5em;
+}
+
+/*
+## ダイアログ内
+*/
+.freetext-modal .modal-dialog {
+  width: 730px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.freetext-modal .modal-body {
+  padding: 3px;
+}
+
+.freetext-modal .textarea-wrapper,
+.freetext-modal .previewarea-wrapper {
+  height: 266px;
+}
+
+.freetext-modal textarea.freetext-input, .freetext-modal .previewarea {
+  height: 323px;
+}
+
+/*
+## 入力、プレビュー並列表示(画面サイズ一定以上の場合)
+*/
+@media (min-width: 1240px) {
+  .freetext-modal .modal-dialog {
+    width: 1225px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
+  .freetext-modal .modal-open .modal {
+    padding-left: 0 !important;
+  }
+
+  .freetext-modal .editor-area {
+    width: 100%;
+  }
+
+  .freetext-modal .textarea-wrapper,
+  .freetext-modal .previewarea-wrapper {
+    width: 50%;
+    float: left;
+    height: 432px;
+    margin-top: 0px;
+  }
+
+  .freetext-modal textarea.freetext-input, .freetext-modal .previewarea {
+    height: 520px;
+  }
+
+  .freetext-modal .frreetext-edit-btns {
+    margin: 0 8px;
+    width: 100%;
+  }
+}
+
+/*
+# select絞込み表示
+*/
+.selectarea {
+  display: inline-block;
+  max-width: calc(100% - 40px);
+  margin-left: 20px;
+}
+
+.selectarea .select-wrapper {
+  width: 100%;
+}
+
+.selectarea .count {
+  text-align: right;
+}
+
+.selectarea select {
+  position: relative;
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.selectarea option[disabled] {
+  display: none;
+}
+
+.selectarea .selected-label {
+  padding: 2px;
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+
+/*==================*/
+/* ■検索条件表示用 */
+/*==================*/
+.cond-opener {
+    background: url("images/icon/icon_sidenavi_down.png") no-repeat rgba(0, 0, 0, 0) center center;
+    content: "";
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    vertical-align: middle;
+    margin-right: 4px;
+    margin-top: -4px;
+    margin-left: -20px;
+}
+
+    .cond-opener.collapsed {
+        background-image: url("images/icon/icon_sidenavi_right.png");
+    }
+
+/*==================*/
+/* ■エラーメッセージ表示用 */
+/* エラーメッセージ表示するときに使用する。 */
+/*==================*/
+.Validation {
+    color: Red;
+}
+
+/*==================*/
+/* ■インジケータ表示用 */
+/* インジケータ表示のスタイルを規定する。 */
+/*==================*/
+/* インジケータ表示時のインジケータのスタイルを規定する。 */
+div.Loader {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 12000;
+}
+/* インジケータ表示時の画面全体を覆うカバーのスタイルを規定する。 */
+div.ScreenCover {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 12001;
+    background-color: #FFFFFF;
+    -moz-opacity: 0.60;
+    opacity: 0.60;
+    filter: alpha(opacity=60);
+}
+
+/*# sourceMappingURL=css/common.css.map */
+

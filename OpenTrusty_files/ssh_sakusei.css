@@ -1,0 +1,849 @@
+﻿/************************
+ 申請データ入力画面用
+ ************************/
+
+.table {
+	width: auto;
+}
+
+/* メインボタン（機能利用権限によりボタン表示／非表示が行われるため、左寄せとなるようスタイルを上書き） */
+.main-btns {
+	justify-content:flex-start;
+	word-wrap: break-word;
+}
+
+/* メインレイアウト */
+.layout-main {
+  height: 100%;
+  padding-bottom: 0;
+  padding-top: 5px;
+}
+
+/* ツリービュー／入力エリアレイアウト */
+.two-column {
+    width: auto;
+	display: table;
+	background-color: #FFFFFF;
+}
+
+/* 左パネル(ツリービュー表示エリア) */
+.left-pane {
+	display:table-cell;
+}
+
+/* ツリーパネルリサイズ */
+.left-pane .ui-resizable-e {
+  background-color: rgba( 0, 0, 0, 0);
+  width: 16px;
+  right: -8px;
+}
+
+/* ツリービュー（フィルターパネル） */
+.TreeFilterPanel {
+  padding-left: 12px;
+  padding-bottom: 4px;
+}
+
+/* ツリービューパネル */
+.tree-panel {
+  overflow: auto;
+  height: 100%;
+}
+
+/* ツリービューエラーのみ表示チェックボックス */
+.tree-filter-checkbox {
+  white-space: nowrap;
+}
+
+/* 右パネル(入力エリア) */
+.right-pane {
+	display:table-cell;
+	overflow: visible;
+	padding-left: 10px;
+}
+
+/* 右パネル(入力エリア-BODY部) */
+.right-pane .right-body {
+	min-width: 700px;
+}
+
+/* 入力エリアパネル */
+.input-panel {
+	overflow: auto;
+}
+
+/* 入力区分移動パネル */
+.inputkbn-select-main {
+	margin: 0 auto; 
+	width: 920px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+/* 入力区分移動ボタン */
+.inputkbn-select-btn, .inputkbn-select-btn:focus {
+  color: #fff;
+  border-radius: 5px;
+  border: 1px solid #d7d7d7;
+  background-color: #004894;
+  background-image: none;
+  padding: 1px 3px;
+  line-height: 30px;
+  min-width: 450px;
+  max-width: 450px;
+}
+
+.inputkbn-select-btn:hover, .inputkbn-select-btn:active {
+  color: #fff;
+  background-color: #6fcae9;
+}
+
+.inputkbn-select-btn:disabled {
+	cursor:default;
+	background-color: #ccc;
+}
+
+
+/* テキストエリアスタイル */
+.textarea {
+	font-family: inherit;
+	font-size: 13px;
+	border-radius: 4px;
+	box-shadow: none;
+	border-color: #e5e5e5;
+	border-width: 1px;
+	border-style: solid;
+	width: calc(100% - 20px);
+	max-width: calc(100% - 20px);
+	overflow-x:auto;
+}
+
+/* 読み取り専用スタイル */
+input[readonly],
+input[readonly]:hover,
+input[readonly]:focus {
+	pointer-events: none;
+	cursor: default;
+	background-color: #ebebe4;
+	color: #545454;
+}
+
+/* グリッドビュー */
+.table-list {
+	width:auto;
+	max-width: calc(100% - 20px);
+}
+
+/* グリッドビューセル エラースタイル*/
+.table-list > tbody > tr td.cell-error {
+  background-color: #FFCECE;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* グリッドビューセル 警告スタイル*/
+.table-list > tbody > tr td.cell-warn {
+  background-color: #FCFFCE;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* グリッドビューセル チェックボックススタイル*/
+.table-list .th-checkall, .table-list .col-checker {
+  width: 30px;
+  min-width: 30px;
+  max-width: 30px;
+  padding: 0;
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* グリッドビューセル 上下移動リンクスタイル(ヘッダー) */
+.table-list .row-replace {
+  width: 20px;
+  min-width: 20px;
+  max-width: 20px;
+}
+
+/* グリッドビューセル 上下移動リンクスタイル(データ) */
+.table-list td.row-replace {
+  padding: 0 4px;
+  vertical-align: middle;
+  width: 20px;
+  min-width: 20px;
+  max-width: 20px;
+}
+
+/* グリッドビューセル NOリンクスタイル(ヘッダー) */
+.table-list .col-num-link {
+  width: 45px;
+  min-width: 45px;
+  max-width: 45px;
+}
+
+/* グリッドビューセル NOリンクスタイル(データ) */
+.table-list td.col-num-link {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* グリッドビューヘッダースタイル セル 幅（最小） */
+.table-list .VeryNarrowColumn
+{
+	min-width: 30px;
+}
+
+/* グリッドビューヘッダースタイル セル 幅（小） */
+.table-list .NarrowColumn
+{
+	min-width: 60px;
+}
+
+/* グリッドビューヘッダースタイル セル 幅（やや小） */
+.table-list .SlightlyNarrowColumn
+{
+	min-width: 90px;
+}
+
+/* グリッドビューヘッダースタイル セル 幅（中） */
+.table-list .NormalColumn
+{
+	min-width: 130px;
+}
+
+/* グリッドビューヘッダースタイル セル 幅（やや大） */
+.table-list .SlightlyWideColumn
+{
+	min-width: 180px;
+}
+
+/* グリッドビューヘッダースタイル セル 幅（大） */
+.table-list .WideColumn
+{
+	min-width: 240px;
+}
+
+/* グリッドビューヘッダースタイル セル 幅（最大） */
+.table-list .VeryWideColumn
+{
+	min-width: 400px;
+}
+
+/* グリッドビューヘッダースタイル セル 幅（フル） */
+.table-list .FullWideColumn
+{
+	width: 90%;
+	min-width: 240px;
+}
+
+/* グリッドビューデータスタイル 標準 */
+.table-list > tbody > tr td.NormalColumn
+{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* グリッドビュー内コンテンツデフォルトスタイル */
+.table-list > tbody > tr td.NormalColumn > span
+{
+  white-space: normal;
+  // 2018.03.01 USOLV TrungHT【OpenTrusty】Chrome対応に関して 対応START
+  /*display: block;*/
+  /*max-height: 7em;*/
+  /*min-height: 1.5em;*/
+  // 2018.03.01 USOLV TrungHT【OpenTrusty】Chrome対応に関して 対応END
+  overflow:auto;
+}
+
+.table-list > tbody > tr td.NormalColumn > p:before {
+  content: " ...";
+  top: 5.6em;
+  right: 0;
+}
+
+.table-list > tbody > tr td.NormalColumn > p:after {
+  content: "";
+  height: 100%;
+  width: 100%;
+}
+
+
+/* グリッドビューデータスタイル 中央寄せ */
+.table-list > tbody > tr td.CenterColumn
+{
+  white-space: normal;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-align: center;
+}
+
+/* グリッドビューデータスタイル 右寄せ */
+.table-list > tbody > tr td.RightColumn
+{
+  white-space: normal;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-align: right;
+}
+
+/* コントロールを配置するDIVスタイル */
+div.ctrlblock {
+	display: table;
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+	border-collapse: collapse;
+}
+
+/* コントロールのグルーピング */
+div.ctrlblock div.group {
+	display: table-cell;
+}
+
+/* コントロールのタイトル */
+div.ctrlblock div.title {
+	display: table-cell;
+	background-color: #d5edf9;
+	vertical-align: middle !important;
+	position: relative;
+	padding: 5px 7.5px !important;
+	min-width: 180px;
+	width: 180px;
+}
+
+/* コントロールのタイトル（エラー）*/
+div.ctrlblock div.title-error {
+	display: table-cell;
+	background-color: #FFECEC;
+	vertical-align: middle !important;
+	position: relative;
+	padding: 5px 7.5px !important;
+	width: 180px;
+}
+
+/* コントロールのタイトル（警告）*/
+div.ctrlblock div.title-warn {
+	display: table-cell;
+	background-color: #FCFFCE;
+	vertical-align: middle !important;
+	position: relative;
+	padding: 5px 7.5px !important;
+	width: 180px;
+}
+
+/* コントロール本体を配置するDIVスタイル */
+div.ctrlblock div.control {
+	display: table-cell;
+	width: calc(100% - 300px);
+	padding: 5px !important;
+	position: relative;
+}
+
+/* コントロール本体を配置するDIVスタイル（エラー）*/
+div.ctrlblock div.control-error {
+	background-color: #FFECEC;
+	display: table-cell;
+	width: calc(100% - 300px);
+	padding: 5px !important;
+	position: relative;
+}
+
+/* コントロール本体を配置するDIVスタイル（警告）*/
+div.ctrlblock div.control-warn {
+	background-color: #FCFFCE;
+	display: table-cell;
+	width: calc(100% - 300px);
+	padding: 5px !important;
+	position: relative;
+}
+
+/* タイトル付きコントロールのスタイル（エラー）*/
+div.headingpanel-error > h4 {
+	background-color: #FFCECE;
+}
+
+/* タイトル付きコントロールのスタイル（警告）*/
+div.headingpanel-warn > h4 {
+	background-color: #FCFFCE;
+}
+
+/* タイトル付きコントロール下部の余白 */
+div.blankLine {
+    height: 8px;
+}
+
+/* 初期値が日本語入力モードのコントロールに使用する。 */
+input.ImemodeOnJa
+{
+	ime-mode: active;
+}
+
+/* モードの変更なし、英数字入力モードのコントロールに使用する。 */
+input.ImemodeOff
+{
+	ime-mode: disabled;
+}
+
+/* 初期値が英数字入力モードのコントロールに使用する。 */
+input.ImemodeOnEn
+{
+	ime-mode: inactive;
+}
+
+/* IMEモードを指定しないコントロールに使用する。 */
+input.ImemodeOn
+{
+	ime-mode: auto;
+}
+
+/* 入力コントロール幅（最小） */
+input.VeryNarrow, select.VeryNarrow
+{
+	min-width: 30px;
+}
+
+/* 入力コントロール幅（小） */
+input.Narrow, select.Narrow
+{
+	min-width: 60px;
+}
+
+/* 入力コントロール幅（やや小） */
+input.SlightlyNarrow, select.SlightlyNarrow
+{
+	min-width: 90px;
+}
+
+/* 入力コントロール幅（中） */
+input.Normal, select.Normal
+{
+	min-width: 120px;
+}
+
+/* 入力コントロール幅（やや大） */
+input.SlightlyWide, select.SlightlyWide
+{
+	min-width: 180px;
+}
+
+/* 入力コントロール幅（大） */
+input.Wide, select.Wide
+{
+	min-width: 240px;
+}
+
+/* 入力コントロール幅（最大） */
+input.VeryWide, select.VeryWide
+{
+	min-width: 400px;
+}
+
+/* 入力コントロール幅（最大） */
+input.FullWide, select.FullWide
+{
+	width: 90%;
+	min-width: 400px;
+}
+
+/* 日付コントロール クリアボタン */
+.dateClear {
+	width: 32px;
+	min-width: 32px;
+}
+
+/* チェックボックス */
+input[type="checkbox"], input[type="radio"] {
+    position:fixed;
+}
+
+/*ツールチップ(本体) */
+.ui-tooltip {
+	border: 1px solid #AAAAAA;
+	min-width:500px;
+	max-width:800px;
+}
+
+/*ツールチップ(リスト) */
+.ui-tooltip ul {
+	margin-left:8px;
+	padding-left:8px;
+}
+
+/* 製造所一覧 製造方法（連番）の選択順フォント */
+.seizo-chain-list-split
+{
+	color: gray;
+	font-size:20px;
+}
+
+.seizo-chain-list-item
+{
+	color: #004870;
+	font-weight: bold;
+	white-space: nowrap;
+	font-size:20px;
+}
+
+
+
+/*=====================*/
+/* ツリービュー        */
+/*=====================*/
+.treeview, .treeview ul {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.treeview ul {
+	margin-top: 4px;
+}
+
+.treeview .hitarea {
+	background: url(../libs/jquery-treeview-master/images/treeview-default.gif) -64px -25px no-repeat;
+	height: 16px;
+	width: 16px;
+	margin-left: -16px;
+	float: left;
+	cursor: pointer;
+}
+/* fix for IE6 */
+* html .hitarea {
+	display: inline;
+	float:none;
+}
+
+.treeview li {
+	margin: 0;
+	padding: 3px 0pt 3px 16px;
+}
+
+.treeview a.selected {
+	background-color: #eee;
+}
+
+#treecontrol { margin: 1em 0; display: none; }
+
+.treeview .hover { color: red; cursor: pointer; }
+
+.treeview li { background: url(../libs/jquery-treeview-master/images/treeview-default-line.gif) 0 0 no-repeat; }
+.treeview li.collapsable, .treeview li.expandable { background-position: 0 -176px; }
+
+.treeview .expandable-hitarea { background-position: -80px -3px; }
+
+.treeview li.last { background-position: 0 -1766px }
+.treeview li.lastCollapsable, .treeview li.lastExpandable { background-image: url(../libs/jquery-treeview-master/images/treeview-default.gif); }
+.treeview li.lastCollapsable { background-position: 0 -111px }
+.treeview li.lastExpandable { background-position: -32px -67px }
+
+.treeview div.lastCollapsable-hitarea, .treeview div.lastExpandable-hitarea { background-position: 0; }
+
+.treeview-red li { background-image: url(../libs/jquery-treeview-master/images/treeview-red-line.gif); }
+.treeview-red .hitarea, .treeview-red li.lastCollapsable, .treeview-red li.lastExpandable { background-image: url(../libs/jquery-treeview-master/images/treeview-red.gif); }
+
+.treeview-black li { background-image: url(../libs/jquery-treeview-master/images/treeview-black-line.gif); }
+.treeview-black .hitarea, .treeview-black li.lastCollapsable, .treeview-black li.lastExpandable { background-image: url(../libs/jquery-treeview-master/images/treeview-black.gif); }
+
+.treeview-gray li { background-image: url(../libs/jquery-treeview-master/images/treeview-gray-line.gif); }
+.treeview-gray .hitarea, .treeview-gray li.lastCollapsable, .treeview-gray li.lastExpandable { background-image: url(../libs/jquery-treeview-master/images/treeview-gray.gif); }
+
+.treeview-famfamfam li { background-image: url(../libs/jquery-treeview-master/images/treeview-famfamfam-line.gif); }
+.treeview-famfamfam .hitarea, .treeview-famfamfam li.lastCollapsable, .treeview-famfamfam li.lastExpandable { background-image: url(../libs/jquery-treeview-master/images/treeview-famfamfam.gif); }
+
+.treeview .placeholder {
+	background: url(../libs/jquery-treeview-master/images/ajax-loader.gif) 0 0 no-repeat;
+	height: 16px;
+	width: 16px;
+	display: block;
+}
+
+.filetree li { padding: 3px 0 2px 16px; }
+.filetree span.folder, .filetree span.file { padding: 1px 0 1px 16px; display: block; }
+.filetree span.folder { background: url(../libs/jquery-treeview-master/images/folder.gif) 0 0 no-repeat; }
+.filetree li.expandable span.folder { background: url(../libs/jquery-treeview-master/images/folder-closed.gif) 0 0 no-repeat; }
+.filetree span.file { background: url(../libs/jquery-treeview-master/images/file.gif) 0 0 no-repeat; }
+
+
+/************************
+ ダイアログタイトル
+ ************************/
+.ui-dialog-titlebar {
+	background: #027fc2;
+}
+
+.ui-widget-header {
+	border : 1px solid #027fc2;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+	min-width: 40px;
+}
+
+button.ui-button.ui-corner-all.ui-widget.ui-button-icon-only.ui-dialog-titlebar-close {
+border:1px solid #ccc;color:#f6f6f6;background:#f6f6f6 url('../libs/jquery-ui/images/ui-bg_glass_100_f6f6f6_1x400.png') 50% 50% repeat-x;font-weight:bold;color:#1c94c4
+}
+
+button.ui-button.ui-corner-all.ui-widget.ui-button-icon-only.ui-dialog-titlebar-close:hover {
+border:1px solid #fbcb09;background:#fdf5ce url("../libs/jquery-ui/images/ui-bg_glass_100_fdf5ce_1x400.png") 50% 50% repeat-x;font-weight:bold;color:#c77405
+}
+
+.ui-widget-header .ui-icon {
+  background-image: url('../libs/jquery-ui/images/ui-icons_222222_256x240.png');
+}
+
+.ui-state-hover .ui-icon, .ui-state-focus .ui-icon {
+  background-image: url('../libs/jquery-ui/images/ui-icons_222222_256x240.png');
+}
+
+/************************
+ 子画面用スタイル定義
+ ************************/
+/* 本体 */
+.modal-body {
+  width: 100%;
+  min-width: 150px;
+}
+
+.modal-body img {
+	width: auto;
+}
+
+/* レイアウト領域 */
+.layout-modal-ssh-main {
+	height: 100%;
+	padding-bottom: 0;
+	padding-top: 1px;
+	min-width: 150px;
+	margin: 0 auto;
+	display: block;
+	position: relative;
+}
+
+/* コンテンツエリア */
+.modal-content-area
+{
+  background-color: #efefef;
+}
+
+/* 画面タイトル */
+.modal-ssh-title {
+	color: #fff;
+	font-size: 15.6px;
+	font-weight: bold;
+	margin: 0;
+	width: auto;
+	text-decoration: none;
+	background: transparent;
+	outline: none;
+	background-position: bottom left, bottom right, top right, top left;
+	background-size: 51% 50%;
+	background-image: -webkit-linear-gradient(45deg, #2ea7e0, #2ea7e0), -webkit-linear-gradient(135deg, #2ea7e0, #2ea7e0), -webkit-linear-gradient(225deg, transparent 8px, #2ea7e0 8px), -webkit-linear-gradient(315deg, #2ea7e0, #2ea7e0);
+	background-image: -ms-linear-gradient(45deg, #2ea7e0, #2ea7e0), -ms-linear-gradient(135deg, #2ea7e0, #2ea7e0), -ms-linear-gradient(225deg, transparent 8px, #2ea7e0 8px), -ms-linear-gradient(315deg, #2ea7e0, #2ea7e0);
+	background-image: -o-linear-gradient(45deg, #2ea7e0, #2ea7e0), -o-linear-gradient(135deg, #2ea7e0, #2ea7e0), -o-linear-gradient(225deg, transparent 8px, #2ea7e0 8px), -o-linear-gradient(315deg, #2ea7e0, #2ea7e0);
+	background-image: -moz-linear-gradient(45deg, #2ea7e0, #2ea7e0), -moz-linear-gradient(135deg, #2ea7e0, #2ea7e0), -moz-linear-gradient(225deg, transparent 8px, #2ea7e0 8px), -moz-linear-gradient(315deg, #2ea7e0, #2ea7e0);
+	background-repeat: no-repeat;
+	line-height: 23px;
+	width: 100%;
+	position: relative;
+}
+
+/* ダイアログ領域 */
+.modal-ssh-dialog {
+	position: relative;
+	width: auto;
+	margin: 10px;
+}
+
+/* グループタイトル */
+.modal-ssh-fieldset {
+	min-width: 0;
+	padding:0 8px 8px;
+	margin: 0;
+	border: 1px solid #B5B5B5;
+}
+
+/* グループ項目 */
+.modal-ssh-legend {
+	display: block;
+	width: auto;
+	padding: 0;
+	margin-bottom: 3px;
+	margin-left: 3px;
+	font-size: 13px;
+	line-height: inherit;
+	color: #333;
+	border: 0px solid #B5B5B5;
+}
+
+/* 条件エリア */
+.modal-condition {
+  padding: 0 20px;
+}
+
+/* 条件エリア（タイトル） */
+.modal-condition h4 {
+  color: #737172;
+  font-size: 15px;
+  margin: 5px 0;
+  position: relative;
+  font-weight: bold;
+  padding-left: 0px;
+}
+
+/* 条件エリア（タイトル） */
+.modal-condition h4::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 16px;
+  background-color: #027fc2;
+  margin: 2px 3px 2px 0;
+  vertical-align: middle;
+}
+
+/* 条件エリアテーブル */
+.modal-condition-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* 条件エリアテーブル(タイトル) */
+.modal-condition-table th {
+  vertical-align: middle !important;
+  position: relative;
+  padding: 5px 7.5px !important;
+  text-align: left;
+}
+
+/* 条件エリアテーブル(項目) */
+.modal-condition-table td {
+  padding: 5px !important;
+  position: relative;
+}
+
+/* 条件エリアボタン */
+.modal-condition-buttons
+{
+	text-align: right;
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+
+/* 条件エリアチェックボックスリスト */
+.modal-condition-table .CheckBoxList
+{
+    overflow:auto;
+    border: 1px solid #ddd;
+}
+
+/* メインエリア */
+.modal-main {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+/* フッターエリア */
+.modal-footer {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+/* フッターエリアボタン */
+.modal-footer-buttons
+{
+  text-align: right;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+/* グリッドビュー本体 */
+.modal-main-result-table, .modal-main-result-table2 {
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+/* ヘッダー */
+.modal-main-result-table > thead > tr > th, .modal-main-result-table2 > thead > tr > th {
+  background-color: #2aa7df;
+  font-size: 14.3px;
+  color: #fff;
+  padding: 2px 4px;
+  text-align: center;
+  white-space: nowrap;
+  border: 1px solid #ddd;
+}
+
+/* ヘッダー */
+.modal-main-result-table > tbody > tr > th, .modal-main-result-table2 > tbody > tr > th {
+	background-color: #2aa7df;
+	font-size: 14.3px;
+	color: #fff;
+	padding: 2px 4px;
+	text-align: center;
+	border: 1px solid #ddd;
+}
+
+/* データ行(偶数) */
+.modal-main-result-table > tbody > tr:nth-of-type(even) > td {
+  background-color: #F0F7FC;
+  border: 1px solid #ddd;
+}
+
+/* データ行(奇数) */
+.modal-main-result-table > tbody > tr:nth-of-type(odd) > td {
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+/* データ行(奇数) */
+.modal-main-result-table2 > tbody > tr:nth-of-type(even) > td {
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+/* データ行(偶数) */
+.modal-main-result-table2 > tbody > tr:nth-of-type(odd) > td {
+  background-color: #F0F7FC;
+  border: 1px solid #ddd;
+}
+
+/* カラムスタイル（コード）*/
+.modal-main-result-table td.col-button, .modal-main-result-table2 td.col-button {
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* カラムスタイル（コード）*/
+.modal-main-result-table td.col-code, .modal-main-result-table2 td.col-code {
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* カラムスタイル（テキスト）*/
+.modal-main-result-table td.col-text, .modal-main-result-table2 td.col-text {
+  vertical-align: middle;
+}
+
+/* カラムスタイル（日付）*/
+.modal-main-result-table td.col-date, .modal-main-result-table2 td.col-date {
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* カラムスタイル（数値）*/
+.modal-main-result-table td.col-numeric, .modal-main-result-table2 td.col-numeric {
+  vertical-align: middle;
+  text-align: right;
+}
+
+/* カラムスタイル（マルチライン）*/
+.modal-main-result-table td.col-multiline, .modal-main-result-table2 td.col-multiline {
+  vertical-align: middle;
+  text-align: right;
+}
+
+
+
